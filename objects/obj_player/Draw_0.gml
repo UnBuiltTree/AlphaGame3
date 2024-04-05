@@ -27,7 +27,21 @@ if (global.debug_mode){
 	// Draw the line
 	draw_line(x, y+ycenter_offset, _x, _y);
 	
+	draw_set_color(c_green);
+	
+	var rotation = direction
+
+	var distance = speed * 12 // Length of the line
+	
+	var _x = x + distance * dcos(rotation);
+	
+	var _y = y+ycenter_offset - distance * dsin(rotation); 
+
+	// Draw the line
+	draw_line(x, y+ycenter_offset, _x, _y);
+	
 	draw_set_color(c_white);
+	
 } else {
 	draw_set_color(c_blue);
 	

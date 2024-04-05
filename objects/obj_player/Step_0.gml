@@ -18,10 +18,12 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 				explode(death_explosion)
 			}
 			*/
-			if (speed > move_speed){
-				speed -= 3;
-			} else if (speed > 0) {
-				speed -= 1;
+			if (_speed > move_speed){
+				_speed -= 4;
+				speed = _speed/10;
+			} else if (_speed > 0) {
+				_speed -= 0.5;
+				speed = _speed/10;
 			}
 			
 			// Keyboard movement controls
@@ -54,12 +56,13 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			        if (down && left) direction = 225;
 			        if (down && right) direction = 315;
 			    }
-    
-			    speed = move_speed;
+				
+				last_direction = direction;
+			    _speed = move_speed;
 
 			    // adjust speed for diagonal movement
 			    if (move_vertically && move_horizontally) {
-			        speed *= sqrt(0.5);
+			        //speed = sqrt(_speed);
 			    }
 			}
 			// end keybaord movement control

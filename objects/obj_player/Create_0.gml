@@ -9,7 +9,10 @@ player_initialize = function(){
 	
 	//variables for player speeds
 	speed = 0;
-	move_speed = 2;
+	_speed = 0;
+	move_speed = 20;
+	
+	last_direction = 0;
 	
 	aim_direction = 0;
 	
