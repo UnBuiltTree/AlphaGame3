@@ -27,6 +27,10 @@ player_initialize = function(){
 	_button_cooldown = 0;
 	button_cooldown = 8;
 	
+	_frame_rate = 4;
+	_frame = 0;
+	walk_spr = spr_player_up_walk;
+	walking = false;
 	show_debug_message("Player Created")
 }
 	
@@ -40,3 +44,5 @@ drive_mecha = function(_x, _y){
 	global.player_alive = true;
 	instance_destroy(self)
 }
+	
+alarm[1] = 5;

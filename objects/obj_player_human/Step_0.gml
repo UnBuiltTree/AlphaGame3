@@ -50,23 +50,28 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			var move_vertically = up != down; // true if either up or down is pressed, but not both
 			var target_direction = direction;
 			
+			walking = false;
+			
 			// finds direction based on key presses
 			if (move_vertically || move_horizontally) {
 			    if (move_vertically) {
-			        if (up) target_direction = 90;
-			        if (down) target_direction = 270;
+			        if (up) { target_direction = 90; walk_spr = spr_player_up_walk}
+			        if (down) { target_direction = 270; walk_spr = spr_player_dn_walk}
+					walking = true;
 			    }
 
 			    if (move_horizontally) {
-			        if (left) target_direction = 180;
-			        if (right) target_direction = 0;
+			        if (left) {target_direction = 180; walk_spr = spr_player_lf_walk}
+			        if (right) {target_direction = 0; walk_spr = spr_player_rt_walk}
+					walking = true;
 			    }
 
 			    if (move_vertically && move_horizontally) {
-			        if (up && right) target_direction = 45;
-			        if (up && left) target_direction = 135;
-			        if (down && left) target_direction = 225;
-			        if (down && right) target_direction = 315;
+			        if (up && right) {target_direction = 45; walk_spr = spr_player_up_walk}
+			        if (up && left) {target_direction = 135; walk_spr = spr_player_lf_walk}
+			        if (down && left) {target_direction = 225; walk_spr = spr_player_dn_walk}
+			        if (down && right) {target_direction = 315; walk_spr = spr_player_rt_walk}
+					walking = true;
 			    }
 				
 				last_direction = direction;
