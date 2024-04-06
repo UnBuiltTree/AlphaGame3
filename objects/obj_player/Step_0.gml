@@ -10,7 +10,9 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 		if (player_local_id == 0){
 			
 			_button_cooldown--;
-			
+			if (_boost_cooldown >= 0){
+				_boost_cooldown--;
+			}
 			/*
 			_damage_cooldown--;
 			
@@ -18,7 +20,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 				explode(death_explosion)
 			}
 			*/
-			if (_speed > move_speed){
+			if (_speed > move_speed_max){
 				_speed -= 4;
 				speed = _speed/10;
 			} else if (_speed > 0) {
@@ -32,6 +34,8 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			var down = keyboard_check(ord("S")) || keyboard_check(vk_down);
 			var left = keyboard_check(ord("A")) || keyboard_check(vk_left);
 			var right = keyboard_check(ord("D")) || keyboard_check(vk_right);
+			
+			var boost =keyboard_check(vk_space);
 
 			// horizontal and vertical movement
 			var move_horizontally = left != right; // true if either left or right is pressed, but not both
@@ -58,7 +62,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			    }
 				
 				last_direction = direction;
-			    _speed = move_speed;
+			    if (_speed < move_speed_max) _speed += move_acceleration;
 
 			    // adjust speed for diagonal movement
 			    if (move_vertically && move_horizontally) {
@@ -66,7 +70,11 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			    }
 			}
 			// end keybaord movement control
-
+			if (boost && (_boost_cooldown <= 0)) { 
+					_speed = boost_speed;
+					boost_available = false;
+					_boost_cooldown = boost_cooldown;
+				}
 			// --- debuging tools
 			if (keyboard_check(ord("B")))
 				{

@@ -19,6 +19,7 @@ spawn_player = function(){
 	show_debug_message("Player Spawned: " + string(_player.player_local_id));
 	global.player_alive = true;
 	curr_game_state = GAME_STATE.PLAYING;
+	var boost_bar = instance_create_layer(16, 16,"Hud", obj_boost_bar);
 }
 
 spawn_player();

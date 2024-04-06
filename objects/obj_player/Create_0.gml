@@ -10,7 +10,12 @@ player_initialize = function(){
 	//variables for player speeds
 	speed = 0;
 	_speed = 0;
-	move_speed = 20;
+	move_acceleration = 5;
+	move_speed_max = 20;
+	
+	boost_speed = 100;
+	_boost_cooldown = 0;
+	boost_cooldown = 80;
 	
 	last_direction = 0;
 	

@@ -26,6 +26,7 @@
   ],
   "ResourceOrderSettings":[
     {"name":"obj_game_mgr","order":1,"path":"objects/obj_game_mgr/obj_game_mgr.yy",},
+    {"name":"obj_boost_bar","order":2,"path":"objects/obj_boost_bar/obj_boost_bar.yy",},
     {"name":"rm_game","order":1,"path":"rooms/rm_game/rm_game.yy",},
   ],
 }
