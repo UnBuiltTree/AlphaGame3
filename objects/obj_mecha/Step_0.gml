@@ -7,7 +7,11 @@ aim_direction = point_direction(x, y+ycenter_offset, mouse_x, mouse_y)
 // Checks if the game isnt paused
 if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 	if (obj_game_mgr.curr_game_state == GAME_STATE.PLAYING){
-		if (player_local_id == 0){
+		if (mecha_local_id == 0){
+			
+			if (mecha_curr_health > mecha_max_health){
+				mecha_curr_health -= 0.6;
+			}
 			
 			_button_cooldown--;
 			if (_boost_cooldown >= 0){
@@ -16,7 +20,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			/*
 			_damage_cooldown--;
 			
-			if (player_health <= 0){
+			if (mecha_health <= 0){
 				explode(death_explosion)
 			}
 			*/
@@ -91,10 +95,33 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 				}
 			if (global.debug_mode)
 				{
-				// -- put debug commands here
+				if (keyboard_check(ord("J")))
+				{
+					if (_button_cooldown <= 0){
+						mecha_curr_health -= 20;
+						}
+					_button_cooldown = button_cooldown;
+					}
+				if (keyboard_check(ord("H")))
+				{
+					if (_button_cooldown <= 0){
+						mecha_curr_health += 20;
+						}
+					_button_cooldown = button_cooldown;
+					}
+				if (keyboard_check(ord("M")))
+				{
+					if (_button_cooldown <= 0){
+						destroy_fuction(last_direction, eject_speed);
+						}
+					_button_cooldown = button_cooldown;
+					}
 				}
+			
 				
-
+			if (mecha_curr_health <= 0){
+				destroy_fuction(direction, eject_speed);
+			}
 		}
 	}
 }
