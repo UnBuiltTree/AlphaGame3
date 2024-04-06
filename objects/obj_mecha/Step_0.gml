@@ -7,14 +7,10 @@ aim_direction = point_direction(x, y+ycenter_offset, mouse_x, mouse_y)
 // Checks if the game isnt paused
 if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 	if (obj_game_mgr.curr_game_state == GAME_STATE.PLAYING){
-		if (player_local_id == 0){
+		if (mecha_local_id == 0){
 			
-			if (player_curr_health <= 0){
-				instance_destroy(self)
-			}
-			
-			if (player_curr_health > player_max_health){
-				player_curr_health -= 0.5;
+			if (mecha_curr_health > mecha_max_health){
+				mecha_curr_health -= 0.6;
 			}
 			
 			_button_cooldown--;
@@ -24,7 +20,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			/*
 			_damage_cooldown--;
 			
-			if (player_health <= 0){
+			if (mecha_health <= 0){
 				explode(death_explosion)
 			}
 			*/
@@ -102,19 +98,30 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 				if (keyboard_check(ord("J")))
 				{
 					if (_button_cooldown <= 0){
-						player_curr_health -= 20;
+						mecha_curr_health -= 20;
 						}
 					_button_cooldown = button_cooldown;
 					}
 				if (keyboard_check(ord("H")))
 				{
 					if (_button_cooldown <= 0){
-						player_curr_health += 20;
+						mecha_curr_health += 20;
+						}
+					_button_cooldown = button_cooldown;
+					}
+				if (keyboard_check(ord("M")))
+				{
+					if (_button_cooldown <= 0){
+						destroy_fuction(last_direction, eject_speed);
 						}
 					_button_cooldown = button_cooldown;
 					}
 				}
-
+			
+				
+			if (mecha_curr_health <= 0){
+				destroy_fuction(direction, eject_speed);
+			}
 		}
 	}
 }

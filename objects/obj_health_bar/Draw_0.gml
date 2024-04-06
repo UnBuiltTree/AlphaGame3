@@ -1,8 +1,13 @@
 var _width = 16;
 
-if (instance_exists(obj_player)){
-	var _curr_health = (obj_player.player_max_health - (obj_player.player_max_health - obj_player.player_curr_health))
-	var _max_health = obj_player.player_max_health
+if (instance_exists(obj_mecha)){
+	var _curr_health = (obj_mecha.mecha_max_health - (obj_mecha.mecha_max_health - obj_mecha.mecha_curr_health))
+	var _max_health = obj_mecha.mecha_max_health
+	var _segments = _max_health / 20
+	_curr_health = round(_curr_health/_segments)*_segments
+} else if (instance_exists(obj_player_human)){
+	var _curr_health = (obj_player_human.player_max_health - (obj_player_human.player_max_health - obj_player_human.player_curr_health))
+	var _max_health = obj_player_human.player_max_health
 	var _segments = _max_health / 20
 	_curr_health = round(_curr_health/_segments)*_segments
 } else {

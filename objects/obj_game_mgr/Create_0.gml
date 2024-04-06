@@ -13,7 +13,7 @@ window_set_cursor(cr_none);
 
 spawn_player = function(){
 	//creates a player within the room and sets their ID to 0 ~Weston
-	var _player = instance_create_layer(room_width/2, room_height/2,"Instances", obj_player);
+	var _player = instance_create_layer(room_width/2, room_height/2,"Instances", obj_player_human);
 	_player.player_initialize();
 	_player.player_local_id = 0;
 	show_debug_message("Player Spawned: " + string(_player.player_local_id));
@@ -22,5 +22,5 @@ spawn_player = function(){
 	var boost_bar = instance_create_layer(16, 8,"Hud", obj_health_bar);
 	var boost_bar = instance_create_layer(16, 26,"Hud", obj_boost_bar);
 }
-
+var _mecha = instance_create_layer(room_width/2+62, room_height/2+64,"Instances", obj_mecha_mount);
 spawn_player();
