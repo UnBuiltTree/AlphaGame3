@@ -13,6 +13,10 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 				instance_destroy(self)
 			}
 			
+			if (player_curr_health > player_max_health){
+				player_curr_health -= 0.5;
+			}
+			
 			_button_cooldown--;
 			if (_boost_cooldown >= 0){
 				_boost_cooldown--;
@@ -98,20 +102,18 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 				if (keyboard_check(ord("J")))
 				{
 					if (_button_cooldown <= 0){
-						player_curr_health -= 5;
+						player_curr_health -= 20;
+						}
+					_button_cooldown = button_cooldown;
+					}
+				if (keyboard_check(ord("H")))
+				{
+					if (_button_cooldown <= 0){
+						player_curr_health += 20;
 						}
 					_button_cooldown = button_cooldown;
 					}
 				}
-				
-				if (keyboard_check(ord("H")))
-				{
-					if (_button_cooldown <= 0){
-						player_curr_health += 5;
-						}
-					_button_cooldown = button_cooldown;
-					}
-				
 
 		}
 	}

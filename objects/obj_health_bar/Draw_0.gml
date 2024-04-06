@@ -18,8 +18,15 @@ if ((_curr_health >= _max_health - _segments*2)&&(_curr_health > 0)){
 } else {
 	draw_set_color(c_green);
 }
-    
-draw_rectangle(x, y, x + _curr_health, y + _width, false);
+
+if (_curr_health <= _max_health){
+	draw_rectangle(x, y, x + _curr_health, y + _width, false);
+} else {
+	draw_rectangle(x, y, x + _max_health, y + _width, false);
+	draw_set_color(_flash_color);
+	draw_rectangle(x + _max_health + 1, y, x + _curr_health, y + _width, false);
+}
+
 
 draw_set_color(c_dkgray);
 draw_rectangle(x, y, x + _max_health, y + _width, true);

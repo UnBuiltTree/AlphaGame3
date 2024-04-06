@@ -1,4 +1,4 @@
-var _width = 16;
+var _width = 8;
 
 if (instance_exists(obj_player)){
 	var _boost_value = (obj_player.boost_cooldown - obj_player._boost_cooldown)
