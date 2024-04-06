@@ -17,6 +17,12 @@ player_initialize = function(){
 	_boost_cooldown = 0;
 	boost_cooldown = 80;
 	
+	player_curr_health = 100;
+	player_max_health = 100;
+	
+	
+	
+	
 	last_direction = 0;
 	
 	aim_direction = 0;

@@ -8,6 +8,7 @@ if (instance_exists(obj_player)){
 } else {
 	var _boost_value = 0;
 	var _boost_max = 0;
+	var _segments = 0;
 }
 
 if ((_boost_value >= _boost_max)&&(_boost_value > 0)){

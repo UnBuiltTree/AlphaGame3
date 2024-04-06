@@ -9,6 +9,10 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 	if (obj_game_mgr.curr_game_state == GAME_STATE.PLAYING){
 		if (player_local_id == 0){
 			
+			if (player_curr_health <= 0){
+				instance_destroy(self)
+			}
+			
 			_button_cooldown--;
 			if (_boost_cooldown >= 0){
 				_boost_cooldown--;
@@ -91,8 +95,22 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 				}
 			if (global.debug_mode)
 				{
-				// -- put debug commands here
+				if (keyboard_check(ord("J")))
+				{
+					if (_button_cooldown <= 0){
+						player_curr_health -= 5;
+						}
+					_button_cooldown = button_cooldown;
+					}
 				}
+				
+				if (keyboard_check(ord("H")))
+				{
+					if (_button_cooldown <= 0){
+						player_curr_health += 5;
+						}
+					_button_cooldown = button_cooldown;
+					}
 				
 
 		}
