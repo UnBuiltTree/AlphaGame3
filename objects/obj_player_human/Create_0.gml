@@ -31,7 +31,16 @@ player_initialize = function(){
 	
 	_frame_rate = 4;
 	_frame = 0;
-	walk_spr = spr_player_up_walk;
+	
+	if (direction < 90){
+		walk_spr = spr_player_rt_walk;
+	} else if (direction < 180){
+		walk_spr = spr_player_up_walk;
+	} else if (direction < 270){
+		walk_spr = spr_player_lf_walk;
+	} else {
+		walk_spr = spr_player_dn_walk;
+	}
 	walking = false;
 	show_debug_message("Player Created")
 }
