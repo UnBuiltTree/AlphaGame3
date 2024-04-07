@@ -1,6 +1,5 @@
 
 player_initialize = function(){
-	
 	player_local_id = 1;
 	
 	player_ysize = sprite_get_height(sprite_index);
@@ -31,6 +30,7 @@ player_initialize = function(){
 	
 	_frame_rate = 4;
 	_frame = 0;
+	walking = false;
 	
 	if (direction < 90){
 		walk_spr = spr_player_rt_walk;
