@@ -1,7 +1,8 @@
 //different level every play
-random_set_seed(25878349);
+//random_set_seed(25878349);
 //25878349
 //98732401
+randomize()
 
 //get tile layer ID
 var _wall_map_id = layer_tilemap_get_id("WallTiles");
@@ -53,6 +54,89 @@ repeat (_steps){
 	
 	}
 }
+	
+ds_grid_set_region(grid_, width_/2+3, height_/2+3, width_/2-3, height_/2-3, FLOOR);
+//--- What this does is create a copy of the skinny hallway gid to compare. Adds an FLOOR tile outline to it making eveything wider and more open
+// copy the grid for checking
+var grid_copy = ds_grid_create(width_, height_);
+ds_grid_copy(grid_copy, grid_);
+
+// loop for converting VOID tiles next to FLOOR tiles into FLOOR
+for (var _y = 0; _y < height_; _y++) {
+    for (var _x = 0; _x < width_; _x++) {
+        // proceeds if the current tile is VOID in the original grid
+        if (grid_copy[# _x, _y] == VOID) {
+            // check neighboring tiles using the copied grid
+            var isNextToFloor = false;
+            for (var _ny = -1; _ny <= 1; _ny++) {
+                for (var _nx = -1; _nx <= 1; _nx++) {
+                    if (_nx == 0 && _ny == 0) continue; // skip the current tile itself
+                    
+                    var checkX = _x + _nx;
+                    var checkY = _y + _ny;
+
+                    // make sure we're not out of bounds
+                    if (checkX >= 0 && checkX < width_ && checkY >= 0 && checkY < height_) {
+                        if (grid_copy[# checkX, checkY] == FLOOR) {
+                            isNextToFloor = true;
+                            break;
+                        }
+                    }
+                }
+                if (isNextToFloor) break;
+            }
+
+            // if next to a FLOOR tile, convert in the original grid
+            if (isNextToFloor) {
+                grid_[# _x, _y] = FLOOR;
+            }
+        }
+    }
+}
+
+// cleanup: destroy the copied grid after use to free up resources
+ds_grid_destroy(grid_copy);
+
+//--- What this does is create a copy of the skinny hallway gid to compare. Adds an WALL tile outline
+// copy the grid for checking
+var grid_copy = ds_grid_create(width_, height_);
+ds_grid_copy(grid_copy, grid_);
+
+// loop for converting VOID tiles next to FLOOR tiles into WALL
+for (var _y = 0; _y < height_; _y++) {
+    for (var _x = 0; _x < width_; _x++) {
+        // proceeds if the current tile is VOID in the original grid
+        if (grid_copy[# _x, _y] == VOID) {
+            // check neighboring tiles using the copied grid
+            var isNextToFloor = false;
+            for (var _ny = -1; _ny <= 1; _ny++) {
+                for (var _nx = -1; _nx <= 1; _nx++) {
+                    if (_nx == 0 && _ny == 0) continue; // skip the current tile itself
+                    
+                    var checkX = _x + _nx;
+                    var checkY = _y + _ny;
+
+                    // make sure we're not out of bounds
+                    if (checkX >= 0 && checkX < width_ && checkY >= 0 && checkY < height_) {
+                        if (grid_copy[# checkX, checkY] == FLOOR) {
+                            isNextToFloor = true;
+                            break;
+                        }
+                    }
+                }
+                if (isNextToFloor) break;
+            }
+
+            // if next to a FLOOR tile, convert into WALLL in the original grid
+            if (isNextToFloor) {
+                grid_[# _x, _y] = WALL;
+            }
+        }
+    }
+}
+
+// cleanup: destroy the copied grid after use to free up resources
+ds_grid_destroy(grid_copy);
 
 //draw grid
 for (var _y = 1; _y < height_ -1; _y++){
@@ -68,10 +152,11 @@ for (var _y = 1; _y < height_ -1; _y++){
 	}
 }
 
+
 // creates wall ojects on Void tiles
 for (var _y = 0; _y < height_; _y++) {
     for (var _x = 0; _x < width_; _x++) {
-        if (grid_[# _x, _y] == VOID) {
+        if (grid_[# _x, _y] == WALL) {
 			// calculates the actual room position based on the grid position
 			var real_x = _x * CELL_WIDTH + CELL_WIDTH / 2;
             var real_y = _y * CELL_HEIGHT + CELL_HEIGHT / 2;

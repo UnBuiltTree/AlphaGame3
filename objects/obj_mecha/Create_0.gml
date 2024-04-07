@@ -79,6 +79,7 @@ collision_manager = function(){
 	// detect collision with a wall object
 if (place_meeting(x + hspeed, y, obj_wall)) {
 	collision = true;
+	hspeed = hspeed/2
     // resolve horizontal overlap
     while (!place_meeting(x + sign(hspeed), y, obj_wall)) {
         x += sign(hspeed);
@@ -88,6 +89,7 @@ if (place_meeting(x + hspeed, y, obj_wall)) {
 
 if (place_meeting(x, y + vspeed, obj_wall)) {
 	collision = true;
+	vspeed = vspeed/2
     // resolve vertical overlap
     while (!place_meeting(x, y + sign(vspeed), obj_wall)) {
         y += sign(vspeed);

@@ -10,7 +10,6 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 		if (mecha_local_id == 0){
 			
 			// Check for collision at the new position
-			
 			particle_manager();
 			collision_manager();
 			
