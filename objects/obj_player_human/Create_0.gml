@@ -13,7 +13,7 @@ player_initialize = function(){
 	move_acceleration = 3;
 	move_speed_max = 15;
 	
-	boost_speed = 60;
+	boost_speed = 40;
 	_boost_cooldown = 0;
 	boost_cooldown = 40;
 	
