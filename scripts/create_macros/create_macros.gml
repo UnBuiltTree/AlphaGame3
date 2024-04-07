@@ -3,6 +3,7 @@
 #macro FLOOR -5
 #macro WALL -6
 #macro VOID -7
+#macro MECHA_SPAWN -8
 
 #macro NORTH 1
 #macro WEST 2

@@ -14,6 +14,7 @@ var _ground = instance_create_layer(room_width/2, room_height/2,"Ground", obj_te
 var _cam = instance_create_layer(room_width/2, room_height/2,"Hud", obj_view_handler);
 var _shadows = instance_create_layer(room_width/2, room_height/2,"Shadow", obj_shadow_manager);
 var _level = instance_create_layer(room_width/2, room_height/2,"Level", obj_level);
+
 spawn_player = function(){
 	//creates a player within the room and sets their ID to 0 ~Weston
 	var _player = instance_create_layer(room_width/2, room_height/2,"Instances", obj_player_human);
@@ -25,5 +26,5 @@ spawn_player = function(){
 	var boost_bar = instance_create_layer(16, 8,"Hud", obj_health_bar);
 	var boost_bar = instance_create_layer(16, 26,"Hud", obj_boost_bar);
 }
-var _mecha = instance_create_layer(room_width/2+62, room_height/2+64,"Instances", obj_mecha_mount);
+
 spawn_player();
