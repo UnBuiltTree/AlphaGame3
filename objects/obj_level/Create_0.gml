@@ -55,6 +55,8 @@ repeat (_steps){
 	}
 }
 	
+grid_[# _controller_x, _controller_y] = MECHA_SPAWN;
+	
 ds_grid_set_region(grid_, width_/2+3, height_/2+3, width_/2-3, height_/2-3, FLOOR);
 //--- What this does is create a copy of the skinny hallway gid to compare. Adds an FLOOR tile outline to it making eveything wider and more open
 // copy the grid for checking
@@ -77,7 +79,7 @@ for (var _y = 0; _y < height_; _y++) {
 
                     // make sure we're not out of bounds
                     if (checkX >= 0 && checkX < width_ && checkY >= 0 && checkY < height_) {
-                        if (grid_copy[# checkX, checkY] == FLOOR) {
+                        if ((grid_copy[# checkX, checkY] == FLOOR )||(grid_copy[# checkX, checkY] == MECHA_SPAWN )){
                             isNextToFloor = true;
                             break;
                         }
@@ -146,14 +148,18 @@ for (var _y = 1; _y < height_ -1; _y++){
 		if(grid_[# _x, _y] == FLOOR){
 			
 			tilemap_set(_wall_map_id, 1, _x, _y);
+		} else if (grid_[# _x, _y] == MECHA_SPAWN) {
+			
+			tilemap_set(_wall_map_id, 3, _x, _y);
 		} else {
-			tilemap_set(_wall_map_id, 0, _x, _y);
+			
+			tilemap_set(_wall_map_id, 2, _x, _y);
 		}
 	}
 }
 
 
-// creates wall ojects on Void tiles
+// creates wall ojects on Wall tiles
 for (var _y = 0; _y < height_; _y++) {
     for (var _x = 0; _x < width_; _x++) {
         if (grid_[# _x, _y] == WALL) {
@@ -164,6 +170,15 @@ for (var _y = 0; _y < height_; _y++) {
             // Create the wall object at this position
 			show_debug_message("Made wall")
             instance_create_layer(real_x, real_y, "Level", obj_wall);
+        }
+		if (grid_[# _x, _y] == MECHA_SPAWN) {
+			// calculates the actual room position based on the grid position
+			var real_x = _x * CELL_WIDTH + CELL_WIDTH / 2;
+            var real_y = _y * CELL_HEIGHT + CELL_HEIGHT / 2;
+
+            // Create the wall object at this position
+			show_debug_message("Made Mecha")
+            instance_create_layer(real_x, real_y, "Instances", obj_mecha_mount);
         }
     }
 }
