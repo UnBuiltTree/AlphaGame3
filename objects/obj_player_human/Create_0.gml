@@ -13,7 +13,7 @@ player_initialize = function(){
 	move_acceleration = 3;
 	move_speed_max = 15;
 	
-	boost_speed = 60;
+	boost_speed = 40;
 	_boost_cooldown = 0;
 	boost_cooldown = 40;
 	
@@ -26,7 +26,22 @@ player_initialize = function(){
 	
 	_button_cooldown = 0;
 	button_cooldown = 8;
+	_particle_cooldown = 0;
+	particle_cooldown = 50;
 	
+	_frame_rate = 4;
+	_frame = 0;
+	
+	if (direction < 90){
+		walk_spr = spr_player_rt_walk;
+	} else if (direction < 180){
+		walk_spr = spr_player_up_walk;
+	} else if (direction < 270){
+		walk_spr = spr_player_lf_walk;
+	} else {
+		walk_spr = spr_player_dn_walk;
+	}
+	walking = false;
 	show_debug_message("Player Created")
 }
 	
@@ -40,3 +55,18 @@ drive_mecha = function(_x, _y){
 	global.player_alive = true;
 	instance_destroy(self)
 }
+	
+	
+particle_manager = function(){
+	if (_particle_cooldown > 0){
+		_particle_cooldown--;
+	}
+	if (player_curr_health > player_max_health){
+		if (_particle_cooldown <= 0) {
+			var _health_particle instance_create_layer(x+random_range(-player_xsize/2, player_xsize/2), y-random_range(player_ysize/4, player_ysize),"hud", obj_health_particle)
+			_particle_cooldown = random_range(particle_cooldown/4, particle_cooldown)
+		}
+	}
+}
+
+alarm[1] = 5;

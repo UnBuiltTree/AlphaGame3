@@ -9,6 +9,8 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 	if (obj_game_mgr.curr_game_state == GAME_STATE.PLAYING){
 		if (mecha_local_id == 0){
 			
+			particle_manager();
+			
 			if (mecha_curr_health > mecha_max_health){
 				mecha_curr_health -= 0.6;
 			}

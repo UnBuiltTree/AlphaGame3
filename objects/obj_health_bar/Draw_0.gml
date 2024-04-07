@@ -1,4 +1,6 @@
 var _width = 16;
+var _x = camera_get_view_x(view_camera[0]) + 8
+var _y = camera_get_view_y(view_camera[0]) + 8
 
 if (instance_exists(obj_mecha)){
 	var _curr_health = (obj_mecha.mecha_max_health - (obj_mecha.mecha_max_health - obj_mecha.mecha_curr_health))
@@ -25,14 +27,14 @@ if ((_curr_health >= _max_health - _segments*2)&&(_curr_health > 0)){
 }
 
 if (_curr_health <= _max_health){
-	draw_rectangle(x, y, x + _curr_health, y + _width, false);
+	draw_rectangle(_x, _y, _x + _curr_health, _y + _width, false);
 } else {
-	draw_rectangle(x, y, x + _max_health, y + _width, false);
+	draw_rectangle(_x, _y, _x + _max_health, _y + _width, false);
 	draw_set_color(_flash_color);
-	draw_rectangle(x + _max_health + 1, y, x + _curr_health, y + _width, false);
+	draw_rectangle(_x + _max_health + 1, _y, _x + _curr_health, _y + _width, false);
 }
 
 
 draw_set_color(c_dkgray);
-draw_rectangle(x, y, x + _max_health, y + _width, true);
+draw_rectangle(_x, _y, _x + _max_health, _y + _width, true);
 draw_set_color(c_white);
