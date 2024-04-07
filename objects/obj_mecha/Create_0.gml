@@ -30,6 +30,9 @@ mecha_initialize = function(){
 	_button_cooldown = 0;
 	button_cooldown = 8;
 	
+	_particle_cooldown = 0;
+	particle_cooldown = 50;
+	
 	show_debug_message("Player Created")
 }
 
@@ -40,9 +43,21 @@ destroy_fuction = function(last_direction, eject_speed){
 	_human.direction = _direction;
 	_human._speed = eject_speed;
 	_human.player_local_id = 0;
-	_human.player_curr_health = mecha_curr_health + _human.player_max_health
+	_human.player_curr_health = mecha_curr_health + _human.player_curr_health
 	show_debug_message("Human Player Spawned: " + string(_human.player_local_id));
 	show_debug_message(string(eject_speed));
 	global.player_alive = true;
 	instance_destroy(self)
+}
+	
+particle_manager = function(){
+	if (_particle_cooldown > 0){
+		_particle_cooldown--;
+	}
+	if (mecha_curr_health > mecha_max_health){
+		if (_particle_cooldown <= 0) {
+			var _health_particle instance_create_layer(x+random_range(-mecha_xsize/2, mecha_xsize/2), y-random_range(mecha_ysize/4, mecha_ysize),"hud", obj_health_particle)
+			_particle_cooldown = random_range(particle_cooldown/4, particle_cooldown)
+		}
+	}
 }
