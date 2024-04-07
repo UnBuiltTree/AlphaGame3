@@ -4,6 +4,8 @@ global.main_menu = true;
 global.debug_mode = false;
 global.cheat_mode = false;
 
+global.hide_shadows = false;
+
 global.player_alive = false;
 
 // --- end global.varables ~Weston_1
