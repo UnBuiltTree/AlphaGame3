@@ -130,6 +130,24 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 					_button_cooldown = button_cooldown;
 					}
 				}
+				if (keyboard_check(ord("V")))
+				{
+					if (_button_cooldown <= 0){
+						if (!global.show_walls){
+							global.show_walls = true
+						} else {
+							global.show_walls = false
+						}
+					_button_cooldown = button_cooldown;
+					}
+				}
+				if (keyboard_check(ord("G")))
+				{
+					if (_button_cooldown <= 0){
+						room_restart()
+					_button_cooldown = button_cooldown;
+					}
+				}
 			
 				
 			if (mecha_curr_health <= 0){
