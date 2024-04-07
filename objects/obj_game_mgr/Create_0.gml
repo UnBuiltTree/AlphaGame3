@@ -12,6 +12,7 @@ enum GAME_STATE
 window_set_cursor(cr_none);
 var _ground = instance_create_layer(room_width/2, room_height/2,"Ground", obj_test_tile);
 var _cam = instance_create_layer(room_width/2, room_height/2,"Hud", obj_view_handler);
+var _level = instance_create_layer(room_width/2, room_height/2,"Level", obj_level);
 spawn_player = function(){
 	//creates a player within the room and sets their ID to 0 ~Weston
 	var _player = instance_create_layer(room_width/2, room_height/2,"Instances", obj_player_human);

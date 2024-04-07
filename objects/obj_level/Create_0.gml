@@ -1,5 +1,7 @@
 //different level every play
-randomize();
+random_set_seed(25878349);
+//25878349
+//98732401
 
 //get tile layer ID
 var _wall_map_id = layer_tilemap_get_id("WallTiles");
@@ -60,7 +62,23 @@ for (var _y = 1; _y < height_ -1; _y++){
 		if(grid_[# _x, _y] == FLOOR){
 			
 			tilemap_set(_wall_map_id, 1, _x, _y);
+		} else {
+			tilemap_set(_wall_map_id, 0, _x, _y);
 		}
 	}
 }
-	
+
+// creates wall ojects on Void tiles
+for (var _y = 0; _y < height_; _y++) {
+    for (var _x = 0; _x < width_; _x++) {
+        if (grid_[# _x, _y] == VOID) {
+			// calculates the actual room position based on the grid position
+			var real_x = _x * CELL_WIDTH + CELL_WIDTH / 2;
+            var real_y = _y * CELL_HEIGHT + CELL_HEIGHT / 2;
+
+            // Create the wall object at this position
+			show_debug_message("Made wall")
+            instance_create_layer(real_x, real_y, "Level", obj_wall);
+        }
+    }
+}

@@ -8,7 +8,7 @@
     "TileSerialiseData":[],
   },
   "name":"t_floor",
-  "out_columns":1,
+  "out_columns":2,
   "out_tilehborder":2,
   "out_tilevborder":2,
   "parent":{
@@ -27,16 +27,16 @@
     "path":"texturegroups/Default",
   },
   "tileAnimation":{
-    "FrameData":[0,1,],
+    "FrameData":[0,1,2,],
     "SerialiseFrameCount":1,
   },
   "tileAnimationFrames":[],
   "tileAnimationSpeed":15.0,
-  "tileHeight":32,
+  "tileHeight":24,
   "tilehsep":0,
   "tilevsep":0,
   "tileWidth":32,
   "tilexoff":0,
   "tileyoff":0,
-  "tile_count":2,
+  "tile_count":3,
 }

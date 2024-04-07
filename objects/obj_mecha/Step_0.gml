@@ -9,7 +9,10 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 	if (obj_game_mgr.curr_game_state == GAME_STATE.PLAYING){
 		if (mecha_local_id == 0){
 			
+			// Check for collision at the new position
+			
 			particle_manager();
+			collision_manager();
 			
 			if (mecha_curr_health > mecha_max_health){
 				mecha_curr_health -= 0.6;
@@ -36,51 +39,55 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			
 			// Keyboard movement controls
 			// Initial checks for each direction
-			var up = keyboard_check(ord("W")) || keyboard_check(vk_up);
-			var down = keyboard_check(ord("S")) || keyboard_check(vk_down);
-			var left = keyboard_check(ord("A")) || keyboard_check(vk_left);
-			var right = keyboard_check(ord("D")) || keyboard_check(vk_right);
+			if (!collision){
+				var up = keyboard_check(ord("W")) || keyboard_check(vk_up);
+				var down = keyboard_check(ord("S")) || keyboard_check(vk_down);
+				var left = keyboard_check(ord("A")) || keyboard_check(vk_left);
+				var right = keyboard_check(ord("D")) || keyboard_check(vk_right);
 			
-			var boost =keyboard_check(vk_space);
+				var boost =keyboard_check(vk_space);
 
-			// horizontal and vertical movement
-			var move_horizontally = left != right; // true if either left or right is pressed, but not both
-			var move_vertically = up != down; // true if either up or down is pressed, but not both
+				// horizontal and vertical movement
+				var move_horizontally = left != right; // true if either left or right is pressed, but not both
+				var move_vertically = up != down; // true if either up or down is pressed, but not both
 
-			// finds direction based on key presses
-			if (move_vertically || move_horizontally) {
-			    if (move_vertically) {
-			        if (up) direction = 90;
-			        if (down) direction = 270;
-			    }
+				// finds direction based on key presses
+				if (move_vertically || move_horizontally) {
+				    if (move_vertically) {
+				        if (up) direction = 90;
+				        if (down) direction = 270;
+				    }
     
-			    if (move_horizontally) {
-			        if (left) direction = 180;
-			        if (right) direction = 0;
-			    }
+				    if (move_horizontally) {
+				        if (left) direction = 180;
+				        if (right) direction = 0;
+				    }
     
-			    //adjust for diagonal movement
-			    if (move_vertically && move_horizontally) {
-			        if (up && right) direction = 45;
-			        if (up && left) direction = 135;
-			        if (down && left) direction = 225;
-			        if (down && right) direction = 315;
-			    }
+				    //adjust for diagonal movement
+				    if (move_vertically && move_horizontally) {
+				        if (up && right) direction = 45;
+				        if (up && left) direction = 135;
+				        if (down && left) direction = 225;
+				        if (down && right) direction = 315;
+				    }
 				
-				last_direction = direction;
-			    if (_speed < move_speed_max) _speed += move_acceleration;
+					last_direction = direction;
+				    if (_speed < move_speed_max) _speed += move_acceleration;
 
-			    // adjust speed for diagonal movement
-			    if (move_vertically && move_horizontally) {
-			        //speed = sqrt(_speed);
-			    }
-			}
-			// end keybaord movement control
-			if (boost && (_boost_cooldown <= 0)) { 
+				    // adjust speed for diagonal movement
+				    if (move_vertically && move_horizontally) {
+				        //speed = sqrt(_speed);
+				    }
+				}
+				if (boost && (_boost_cooldown <= 0)) { 
 					_speed = boost_speed;
 					boost_available = false;
 					_boost_cooldown = boost_cooldown;
 				}
+			}
+			collision = false;
+			
+			// end keybaord movement control
 			// --- debuging tools
 			if (keyboard_check(ord("B")))
 				{

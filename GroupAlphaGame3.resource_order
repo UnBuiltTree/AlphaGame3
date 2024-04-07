@@ -36,6 +36,7 @@
     {"name":"obj_mecha_mount","order":2,"path":"objects/obj_mecha_mount/obj_mecha_mount.yy",},
     {"name":"obj_player_human","order":1,"path":"objects/obj_player_human/obj_player_human.yy",},
     {"name":"obj_view_handler","order":3,"path":"objects/obj_view_handler/obj_view_handler.yy",},
+    {"name":"obj_wall","order":2,"path":"objects/obj_wall/obj_wall.yy",},
     {"name":"rm_game","order":1,"path":"rooms/rm_game/rm_game.yy",},
     {"name":"spr_floor_tile","order":1,"path":"sprites/spr_floor_tile/spr_floor_tile.yy",},
     {"name":"spr_mecha","order":1,"path":"sprites/spr_mecha/spr_mecha.yy",},
@@ -43,6 +44,7 @@
     {"name":"spr_player_lf_walk","order":4,"path":"sprites/spr_player_lf_walk/spr_player_lf_walk.yy",},
     {"name":"spr_player_rt_walk","order":3,"path":"sprites/spr_player_rt_walk/spr_player_rt_walk.yy",},
     {"name":"spr_player_up_walk","order":5,"path":"sprites/spr_player_up_walk/spr_player_up_walk.yy",},
+    {"name":"spr_test_wall","order":2,"path":"sprites/spr_test_wall/spr_test_wall.yy",},
     {"name":"Sprite3","order":16,"path":"sprites/Sprite3/Sprite3.yy",},
   ],
 }
