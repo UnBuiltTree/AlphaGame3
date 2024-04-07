@@ -10,6 +10,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 		if (player_local_id == 0){
 			
 			particle_manager();
+			collision_manager();
 			
 			if (player_curr_health < 0){
 				instance_destroy(self)
@@ -46,70 +47,72 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			var right = keyboard_check(ord("D")) || keyboard_check(vk_right);
 			
 			var boost =keyboard_check(vk_space);
-
-			// horizontal and vertical movement
-			var move_horizontally = left != right; // true if either left or right is pressed, but not both
-			var move_vertically = up != down; // true if either up or down is pressed, but not both
-			var target_direction = direction;
+			if (!collision){
+				// horizontal and vertical movement
+				var move_horizontally = left != right; // true if either left or right is pressed, but not both
+				var move_vertically = up != down; // true if either up or down is pressed, but not both
+				var target_direction = direction;
 			
-			walking = false;
+				walking = false;
 			
-			// finds direction based on key presses
-			if (move_vertically || move_horizontally) {
-			    if (move_vertically) {
-			        if (up) { target_direction = 90; walk_spr = spr_player_up_walk}
-			        if (down) { target_direction = 270; walk_spr = spr_player_dn_walk}
-					walking = true;
-			    }
-
-			    if (move_horizontally) {
-			        if (left) {target_direction = 180; walk_spr = spr_player_lf_walk}
-			        if (right) {target_direction = 0; walk_spr = spr_player_rt_walk}
-					walking = true;
-			    }
-
-			    if (move_vertically && move_horizontally) {
-			        if (up && right) {target_direction = 45; walk_spr = spr_player_up_walk}
-			        if (up && left) {target_direction = 135; walk_spr = spr_player_lf_walk}
-			        if (down && left) {target_direction = 225; walk_spr = spr_player_dn_walk}
-			        if (down && right) {target_direction = 315; walk_spr = spr_player_rt_walk}
-					walking = true;
-			    }
-				
-				last_direction = direction;
-			    if (_speed < move_speed_max) _speed += move_acceleration;
-			}
-			// Rotate towards target direction by 5 degrees, accounting for seam between 0 and 360 degrees
-			if (_speed < 10) {
-			    direction = target_direction;
-			} else {
-				var direction_difference = target_direction - direction;
-
-				// Adjust for the shortest distance considering the 360 degrees wraparound
-				if (direction_difference > 180) {
-				    direction_difference -= 360;
-				} else if (direction_difference < -180) {
-				    direction_difference += 360;
-				}
-
-				if (direction_difference != 0) {
-				    if (direction_difference > 0) {
-				        direction += (abs(direction_difference) >= 5) ? 5 : abs(direction_difference);
-				    } else {
-				        direction -= (abs(direction_difference) >= 5) ? 5 : abs(direction_difference);
+				// finds direction based on key presses
+				if (move_vertically || move_horizontally) {
+				    if (move_vertically) {
+				        if (up) { target_direction = 90; walk_spr = spr_player_up_walk}
+				        if (down) { target_direction = 270; walk_spr = spr_player_dn_walk}
+						walking = true;
 				    }
+
+				    if (move_horizontally) {
+				        if (left) {target_direction = 180; walk_spr = spr_player_lf_walk}
+				        if (right) {target_direction = 0; walk_spr = spr_player_rt_walk}
+						walking = true;
+				    }
+
+				    if (move_vertically && move_horizontally) {
+				        if (up && right) {target_direction = 45; walk_spr = spr_player_up_walk}
+				        if (up && left) {target_direction = 135; walk_spr = spr_player_lf_walk}
+				        if (down && left) {target_direction = 225; walk_spr = spr_player_dn_walk}
+				        if (down && right) {target_direction = 315; walk_spr = spr_player_rt_walk}
+						walking = true;
+				    }
+				
+					last_direction = direction;
+				    if (_speed < move_speed_max) _speed += move_acceleration;
 				}
+				// Rotate towards target direction by 5 degrees, accounting for seam between 0 and 360 degrees
+				if (_speed < 10) {
+				    direction = target_direction;
+				} else {
+					var direction_difference = target_direction - direction;
+
+					// Adjust for the shortest distance considering the 360 degrees wraparound
+					if (direction_difference > 180) {
+					    direction_difference -= 360;
+					} else if (direction_difference < -180) {
+					    direction_difference += 360;
+					}
+
+					if (direction_difference != 0) {
+					    if (direction_difference > 0) {
+					        direction += (abs(direction_difference) >= 5) ? 5 : abs(direction_difference);
+					    } else {
+					        direction -= (abs(direction_difference) >= 5) ? 5 : abs(direction_difference);
+					    }
+					}
+				}
+
+				// Normalize direction to the range [0, 360)
+				direction = (direction + 360) % 360;
+
+				// end keybaord movement control
+				if (boost && (_boost_cooldown <= 0)) { 
+						_speed = boost_speed;
+						boost_available = false;
+						_boost_cooldown = boost_cooldown;
+					}
 			}
-
-			// Normalize direction to the range [0, 360)
-			direction = (direction + 360) % 360;
-
-			// end keybaord movement control
-			if (boost && (_boost_cooldown <= 0)) { 
-					_speed = boost_speed;
-					boost_available = false;
-					_boost_cooldown = boost_cooldown;
-				}
+			collision = false;
 			// --- debuging tools
 			if (keyboard_check(ord("B")))
 				{
