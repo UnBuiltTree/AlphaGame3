@@ -42,6 +42,7 @@ player_initialize = function(){
 		walk_spr = spr_player_dn_walk;
 	}
 	walking = false;
+	collision = false;
 	show_debug_message("Player Created")
 }
 	
@@ -67,6 +68,27 @@ particle_manager = function(){
 			_particle_cooldown = random_range(particle_cooldown/4, particle_cooldown)
 		}
 	}
+}
+
+collision_manager = function(){
+	// detect collision with a wall object
+if (place_meeting(x + hspeed, y, obj_wall)) {
+	collision = true;
+    // resolve horizontal overlap
+    while (!place_meeting(x + sign(hspeed), y, obj_wall)) {
+        x += sign(hspeed);
+    }
+    hspeed = -hspeed; // Invert horizontal speed after resolving overlap
+}
+
+if (place_meeting(x, y + vspeed, obj_wall)) {
+	collision = true;
+    // resolve vertical overlap
+    while (!place_meeting(x, y + sign(vspeed), obj_wall)) {
+        y += sign(vspeed);
+    }
+    vspeed = -vspeed; // Invert vertical speed after resolving overlap
+}
 }
 
 alarm[1] = 5;
