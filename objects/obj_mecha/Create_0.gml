@@ -1,6 +1,5 @@
 
 mecha_initialize = function(){
-	
 	mecha_local_id = 0;
 	
 	mecha_ysize = sprite_get_height(sprite_index);
@@ -33,7 +32,21 @@ mecha_initialize = function(){
 	_particle_cooldown = 0;
 	particle_cooldown = 50;
 	
-	show_debug_message("Player Created")
+	walking = false;
+	_frame_rate = 16;
+	_frame = 0;
+	if (direction < 90){
+		walk_spr = spr_mecha_leg_rt_walk;
+	} else if (direction < 180){
+		walk_spr = spr_mecha_leg_up_walk;
+	} else if (direction < 270){
+		walk_spr = spr_mecha_leg_lf_walk;
+	} else {
+		walk_spr = spr_mecha_leg_dn_walk;
+	}
+	torso_spr = spr_torso
+	alarm[1] = _frame_rate;
+	show_debug_message("Mecha Created")
 }
 
 destroy_fuction = function(last_direction, eject_speed){

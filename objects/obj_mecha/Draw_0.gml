@@ -1,6 +1,13 @@
 /// @description Insert description here
 // You can write your code in this editor
-draw_self()
+//draw_self()
+if (walking){
+	draw_sprite(walk_spr, _frame, x, y)
+} else {
+	draw_sprite(walk_spr, 0, x, y)
+}
+draw_sprite(torso_spr, 0, x, y - 16)
+	
 if (global.debug_mode){
 	draw_set_color(c_orange);
     

@@ -47,29 +47,34 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			
 				var boost =keyboard_check(vk_space);
 
-				// horizontal and vertical movement
-				var move_horizontally = left != right; // true if either left or right is pressed, but not both
-				var move_vertically = up != down; // true if either up or down is pressed, but not both
+			// horizontal and vertical movement
+			var move_horizontally = left != right; // true if either left or right is pressed, but not both
+			var move_vertically = up != down; // true if either up or down is pressed, but not both
+			walking = false;
+			
+			// finds direction based on key presses
+			if (move_vertically || move_horizontally) {
+			    if (move_vertically) {
+			        if (up) {direction = 90; walk_spr = spr_mecha_leg_up_walk}
+			        if (down) {direction = 270; walk_spr = spr_mecha_leg_dn_walk}
+					walking = true;
+			    }
+    
+			    if (move_horizontally) {
+			        if (left) {direction = 180; walk_spr = spr_mecha_leg_lf_walk}
+			        if (right) {direction = 0; walk_spr = spr_mecha_leg_rt_walk}
+					walking = true;
+			    }
+    
+			    //adjust for diagonal movement
+			    if (move_vertically && move_horizontally) {
+			        if (up && right) {direction = 45; walk_spr = spr_mecha_leg_up_walk}
+			        if (up && left) {direction = 135; walk_spr = spr_mecha_leg_lf_walk}
+			        if (down && left) {direction = 225; walk_spr = spr_mecha_leg_dn_walk}
+			        if (down && right) {direction = 315; walk_spr = spr_mecha_leg_rt_walk}
+					walking = true;
+			    }
 
-				// finds direction based on key presses
-				if (move_vertically || move_horizontally) {
-				    if (move_vertically) {
-				        if (up) direction = 90;
-				        if (down) direction = 270;
-				    }
-    
-				    if (move_horizontally) {
-				        if (left) direction = 180;
-				        if (right) direction = 0;
-				    }
-    
-				    //adjust for diagonal movement
-				    if (move_vertically && move_horizontally) {
-				        if (up && right) direction = 45;
-				        if (up && left) direction = 135;
-				        if (down && left) direction = 225;
-				        if (down && right) direction = 315;
-				    }
 				
 					last_direction = direction;
 				    if (_speed < move_speed_max) _speed += move_acceleration;
