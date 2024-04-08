@@ -1,0 +1,1 @@
+inventory_add(id, irandom(2));
