@@ -1,3 +1,5 @@
+
+
 if (!surface_exists(light_surface)) {
     light_surface = surface_create(room_width, room_height);
     surface_set_target(light_surface);
@@ -22,21 +24,21 @@ var squish_factor = 0.75;
 
 	//draws shadows for obj_enemy, obj_player, and obj_player_spawn.
 	with (obj_player_human) {
-		var radius = (sprite_get_width(sprite_index)/2+1)*20
+		var radius = (sprite_get_width(sprite_index)/2+1)*12
 		var sx = x-vx-1
 		var sy = y-vy-2
 
 		draw_ellipse(sx - radius, sy - radius* squish_factor, sx + radius, sy + radius * squish_factor, false);
 	}
 	with (obj_mecha) {
-		var radius = (sprite_get_width(sprite_index)/2+1)*10
+		var radius = (sprite_get_width(sprite_index)/2+1)*12
 		var sx = x-vx-1
 		var sy = y-vy-2
 
 		draw_ellipse(sx - radius, sy - radius* squish_factor, sx + radius, sy + radius * squish_factor, false);
 	}
 	with (obj_mecha_mount) {
-		var radius = (sprite_get_width(sprite_index)/2+1)*2
+		var radius = (sprite_get_width(sprite_index)/2+1)*4
 		var sx = x-vx-1
 		var sy = y-vy-2
 	    
