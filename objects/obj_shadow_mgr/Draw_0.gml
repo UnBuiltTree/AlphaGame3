@@ -1,9 +1,9 @@
 if(!surface_exists(shadow_surface)){
-	shadow_surface = surface_create(room_width, room_height);
+	shadow_surface = surface_create(camera_get_view_width(view_camera[0]), camera_get_view_height(view_camera[0]));
 }
 
-var vx = camera_get_view_x(0);
-var vy = camera_get_view_y(0);
+var vx = camera_get_view_x(view_camera[0]);
+var vy = camera_get_view_y(view_camera[0]);
 var squish_factor = 0.75;
 
 //-----------------------------
@@ -43,7 +43,6 @@ if (!global.hide_shadows){
 
 	//this is the alpha for the shadows
 	draw_set_alpha(sdw_alpha);
-
 	draw_surface(shadow_surface, vx, vy);
 
 	//resets the draw alpha

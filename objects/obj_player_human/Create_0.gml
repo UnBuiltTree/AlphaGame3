@@ -43,6 +43,7 @@ player_initialize = function(){
 	}
 	walking = false;
 	collision = false;
+	
 	show_debug_message("Player Created")
 }
 	
@@ -90,5 +91,7 @@ if (place_meeting(x, y + vspeed, obj_wall)) {
     vspeed = -vspeed; // Invert vertical speed after resolving overlap
 }
 }
+	
+
 
 alarm[1] = 5;
