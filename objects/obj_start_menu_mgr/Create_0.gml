@@ -6,6 +6,7 @@ global.cheat_mode = false;
 
 global.hide_shadows = false;
 global.show_walls = false;
+global.show_explore = false;
 
 global.player_alive = false;
 

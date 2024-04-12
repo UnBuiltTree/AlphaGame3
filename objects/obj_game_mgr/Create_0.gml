@@ -27,4 +27,4 @@ var _level = instance_create_layer(room_width/2, room_height/2,"Level", obj_leve
 spawn_player();
 var _cam = instance_create_layer(room_width/2, room_height/2,"Hud", obj_view_handler);
 var _shadows = instance_create_layer(room_width/2, room_height/2,"Shadow", obj_shadow_mgr);
-var _light = instance_create_layer(room_width/2, room_height/2,"Light_mask", obj_light_mgr);
+var _explore = instance_create_layer(room_width/2, room_height/2,"Light_mask", obj_explore_mgr);
