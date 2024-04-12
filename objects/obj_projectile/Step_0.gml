@@ -1,1 +1,1 @@
-collision_manager(true);
+collision_manager(true, true);

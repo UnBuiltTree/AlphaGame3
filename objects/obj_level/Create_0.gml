@@ -18,14 +18,27 @@ var _controller_x = width_ div 2;
 var _controller_y = height_ div 2;
 var _controller_direction = irandom(3); // (3) == down
 var _steps = 400; 
+var _branch_steps = 100;
 
 //odds of changing direction
 var _direction_change_odds = 1; 
 
+var _step_num = 0;
+
+var _target_step = irandom(_steps)
+
 repeat (_steps){
-	
+	_step_num++;
+	show_debug_message(string(_step_num))
+	show_debug_message("Target step"+string(_target_step))
 	//take current controller position, and sets it to a floor
-	grid_[# _controller_x, _controller_y] = FLOOR;
+	if (_step_num == _target_step){
+		grid_[# _controller_x, _controller_y] = BRANCH_SEED;
+		var _branch_x = _controller_x;
+		var _branch_y = _controller_y;
+	} else {
+		grid_[# _controller_x, _controller_y] = FLOOR;
+	}
 	
 	//randomize direction
 	if(irandom(_direction_change_odds) == _direction_change_odds){
@@ -54,7 +67,49 @@ repeat (_steps){
 	
 	}
 }
+
+var _branch_controller_x = _branch_x;
+var _branch_controller_y = _branch_y;
+
+repeat (_branch_steps){
+	_step_num++;
+	show_debug_message(string(_step_num))
+	show_debug_message("Target step"+string(_target_step))
+	//take current controller position, and sets it to a floor
+	if (_step_num == _target_step){
+		grid_[# _branch_controller_x, _branch_controller_y] = BRANCH_SEED;
+	} else {
+		grid_[# _branch_controller_x, _branch_controller_y] = FLOOR;
+	}
 	
+	//randomize direction
+	if(irandom(_direction_change_odds) == _direction_change_odds){
+		
+		_controller_direction = irandom(3);
+	}
+	
+	//move controller
+	var _x_direction = lengthdir_x(1, _controller_direction * 90);
+	var _y_direction = lengthdir_y(1, _controller_direction * 90);
+	
+	_controller_x += _x_direction;
+	_controller_y += _y_direction;
+	
+	//make sure we don't go outside the grid
+	if (_controller_x < 2 || _controller_x >= width_ -2){
+		
+		//instead of going forward once (out of the bounds), it takes us 2 tiles back. (x)
+		_controller_x += -_x_direction * 2;
+	}
+	
+	if (_controller_y < 2 || _controller_y >= height_ -2){
+		
+		//instead of going forward once (out of the bounds), it takes us 2 tiles back. (y)
+		_controller_y += -_y_direction * 2;
+	
+	}
+}
+
 grid_[# _controller_x, _controller_y] = MECHA_SPAWN;
 	
 ds_grid_set_region(grid_, width_/2+3, height_/2+3, width_/2-3, height_/2-3, FLOOR);
@@ -136,7 +191,6 @@ for (var _y = 0; _y < height_; _y++) {
         }
     }
 }
-
 // cleanup: destroy the copied grid after use to free up resources
 ds_grid_destroy(grid_copy);
 
@@ -146,14 +200,17 @@ for (var _y = 1; _y < height_ -1; _y++){
 	for (var _x = 1; _x < width_ -1; _x++){
 		
 		if(grid_[# _x, _y] == FLOOR){
-			
 			tilemap_set(_wall_map_id, 1, _x, _y);
+			
+		} else if (grid_[# _x, _y] == BRANCH_SEED) {
+			tilemap_set(_wall_map_id, 4, _x, _y);
+			
 		} else if (grid_[# _x, _y] == MECHA_SPAWN) {
-			
 			tilemap_set(_wall_map_id, 3, _x, _y);
-		} else {
 			
+		} else {
 			tilemap_set(_wall_map_id, 2, _x, _y);
+			
 		}
 	}
 }
@@ -168,7 +225,7 @@ for (var _y = 0; _y < height_; _y++) {
             var real_y = _y * CELL_HEIGHT + CELL_HEIGHT / 2;
 
             // Create the wall object at this position
-			show_debug_message("Made wall")
+			//show_debug_message("Made wall")
             instance_create_layer(real_x, real_y, "Level", obj_wall);
         }
 		if (grid_[# _x, _y] == MECHA_SPAWN) {

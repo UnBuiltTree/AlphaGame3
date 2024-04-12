@@ -5,6 +5,8 @@
 #macro WALL -6
 #macro VOID -7
 #macro MECHA_SPAWN -8
+#macro BRANCH_SEED -9
+#macro BRANCH_END -10
 
 #macro NORTH 1
 #macro WEST 2

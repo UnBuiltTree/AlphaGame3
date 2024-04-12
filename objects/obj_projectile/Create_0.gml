@@ -42,17 +42,3 @@ initialize_projectile  = function(_projectile_type, _direction, _add_xspeed, _ad
 hit_nothing = function(){
 	instance_destroy(self)
 }
-
-hit_level = function(_normal_x, _normal_y) {
-    if (bounce) {
-        // Reflect based on the surface normal
-        if (_normal_x != 0) { // Reflect horizontally
-            hspeed = hspeed * _normal_x; // Reflect and apply the direction of the normal
-        }
-        if (_normal_y != 0) { // Reflect vertically
-            vspeed = vspeed * _normal_y; // Reflect and apply the direction of the normal
-        }
-	} else {
-        instance_destroy(self);
-	}
-}
