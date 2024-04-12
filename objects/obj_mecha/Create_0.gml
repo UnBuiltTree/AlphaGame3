@@ -32,6 +32,8 @@ mecha_initialize = function(){
 	_particle_cooldown = 0;
 	particle_cooldown = 50;
 	
+	gun_one_fire_rate = 6;
+	
 	walking = false;
 	_frame_rate = 16;
 	_frame = 0;
@@ -78,33 +80,49 @@ particle_manager = function(){
 	}
 }
 	
-collision_manager = function(){
-	// detect collision with a wall object
-if (place_meeting(x + hspeed, y, obj_wall)) {
-	collision = true;
-	hspeed = hspeed/2
-    // resolve horizontal overlap
-    while (!place_meeting(x + sign(hspeed), y, obj_wall)) {
-        x += sign(hspeed);
-    }
-    hspeed = -hspeed; // Invert horizontal speed after resolving overlap
-}
-
-if (place_meeting(x, y + vspeed, obj_wall)) {
-	collision = true;
-	vspeed = vspeed/2
-    // resolve vertical overlap
-    while (!place_meeting(x, y + sign(vspeed), obj_wall)) {
-        y += sign(vspeed);
-    }
-    vspeed = -vspeed; // Invert vertical speed after resolving overlap
-}
-}
-	
 create_inventory = function(){
 	var _inv = instance_create_layer(x, y,"Hud", obj_inventory);
 }
 
 destory_inventory = function(){
 	instance_destroy(obj_inventory)
+}
+	
+create_projectile = function(_projectile_type, _add_xspeed, _add_yspeed)
+{
+	// Offsets for players gun position
+	
+	_projectile_offset = 0;
+	
+	// Sets new postions from adjusted positions and players position
+	var _projectile_pos_x = x
+	var _projectile_pos_y = y + ycenter_offset
+	var _spawn_distance = 10;
+	var _direction = point_direction(_projectile_pos_x, _projectile_pos_y, mouse_x, mouse_y)
+	
+	_projectile_pos_x += lengthdir_x(_spawn_distance, _direction);
+    _projectile_pos_y += lengthdir_y(_spawn_distance, _direction);
+
+	// Creates new player projectile from the new positions
+	var _new_projectile = instance_create_layer(_projectile_pos_x, _projectile_pos_y, "Projectiles", obj_projectile);
+    _new_projectile.owner = self;	
+    _new_projectile.initialize_projectile(_projectile_type, _direction, _add_xspeed, _add_yspeed);
+	
+}
+
+trigger_pressed = function(_trigger_type)
+{
+	switch (_trigger_type) {
+	    case "gun_left":
+			show_debug_message("gun1 :" + string(global.gun_one_cooldown))
+	        if (global.gun_one_cooldown <= 0)
+			{
+				// Resets the fire cooldown, uses special burt mode for auto cannon
+				show_debug_message("gun1 fired:" + string(global.gun_one_cooldown))
+				global.gun_one_cooldown = 20;
+				// Creates a projectile
+				create_projectile("player_projectile", hspeed, vspeed);
+			}
+	        break;
+	}
 }

@@ -49,13 +49,13 @@ var squish_factor = 0.75;
 	gpu_set_fog(false, c_white, 0, 0);
 
 	surface_reset_target();
-	draw_set_alpha(light_alpha);
-	// Draw the mask surface
-	
-	gpu_set_blendmode_ext(bm_inv_src_color, bm_src_alpha);
 	
 	//gpu_set_blendmode_ext(bm_src_color, bm_inv_src_color);
-	draw_surface(light_surface, vx, vy);
+	if (global.show_explore){
+		draw_set_alpha(light_alpha);
+		gpu_set_blendmode_ext(bm_inv_src_color, bm_src_alpha);
+		draw_surface(light_surface, vx, vy);
+	}
 	gpu_set_blendmode(bm_normal);
 
 	//resets the draw alpha

@@ -17,6 +17,6 @@ for (var i = 0; i < INVENTORY_SLOTS; i += 1) {
 	var yy = _y + (i div row_length)*(slot_size+2);
 	draw_sprite(spr_inv_slot, 0, xx, yy);
 	if(inventory[i] != -1){
-		draw_sprite(spr_item, inventory[i], xx+3, yy+3);
+		draw_sprite(spr_item, inventory[i], xx+2, yy+2);
 	}
 }

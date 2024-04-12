@@ -11,7 +11,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			
 			// Check for collision at the new position
 			particle_manager();
-			collision_manager();
+			collision_manager(true);
 			
 			if (mecha_curr_health > mecha_max_health){
 				mecha_curr_health -= 0.6;
@@ -92,6 +92,17 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			collision = false;
 			
 			// end keybaord movement control
+			
+			if (keyboard_check(vk_space) || mouse_check_button(mb_left))
+				{
+					var _trigger_type = "gun_left";
+					trigger_pressed(_trigger_type);
+				}
+				
+			if (global.gun_one_cooldown >= 0){
+				global.gun_one_cooldown--
+			}
+			
 			// --- debuging tools
 			if (keyboard_check(ord("B")))
 				{
