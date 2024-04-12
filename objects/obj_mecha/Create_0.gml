@@ -46,6 +46,8 @@ mecha_initialize = function(){
 	}
 	torso_spr = spr_torso
 	alarm[1] = _frame_rate;
+	
+	create_inventory();
 	show_debug_message("Mecha Created")
 }
 
@@ -60,6 +62,7 @@ destroy_fuction = function(last_direction, eject_speed){
 	show_debug_message("Human Player Spawned: " + string(_human.player_local_id));
 	show_debug_message(string(eject_speed));
 	global.player_alive = true;
+	destory_inventory();
 	instance_destroy(self)
 }
 	
@@ -96,4 +99,12 @@ if (place_meeting(x, y + vspeed, obj_wall)) {
     }
     vspeed = -vspeed; // Invert vertical speed after resolving overlap
 }
+}
+	
+create_inventory = function(){
+	var _inv = instance_create_layer(x, y,"Hud", obj_inventory);
+}
+
+destory_inventory = function(){
+	instance_destroy(obj_inventory)
 }
