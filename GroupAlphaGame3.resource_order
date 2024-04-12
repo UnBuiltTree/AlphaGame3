@@ -1,12 +1,18 @@
 {
-  "FolderOrderSettings":[],
+  "FolderOrderSettings":[
+    {"name":"Level","order":1,"path":"folders/Objects/Actors/Level.yy",},
+    {"name":"Player","order":2,"path":"folders/Objects/Actors/Player.yy",},
+  ],
   "ResourceOrderSettings":[
-    {"name":"obj_inventory","order":1,"path":"objects/obj_inventory/obj_inventory.yy",},
     {"name":"obj_explore_mgr","order":1,"path":"objects/obj_explore_mgr/obj_explore_mgr.yy",},
-    {"name":"inventory_functions","order":1,"path":"scripts/inventory_functions/inventory_functions.yy",},
+    {"name":"obj_inventory","order":1,"path":"objects/obj_inventory/obj_inventory.yy",},
+    {"name":"obj_projectile","order":3,"path":"objects/obj_projectile/obj_projectile.yy",},
     {"name":"gun_functions","order":2,"path":"scripts/gun_functions/gun_functions.yy",},
+    {"name":"inventory_functions","order":1,"path":"scripts/inventory_functions/inventory_functions.yy",},
+    {"name":"collision_manager","order":3,"path":"scripts/collision_manager/collision_manager.yy",},
     {"name":"spr_inv_box","order":2,"path":"sprites/spr_inv_box/spr_inv_box.yy",},
     {"name":"spr_inv_slot","order":1,"path":"sprites/spr_inv_slot/spr_inv_slot.yy",},
     {"name":"spr_item","order":3,"path":"sprites/spr_item/spr_item.yy",},
+    {"name":"spr_projectile","order":1,"path":"sprites/spr_projectile/spr_projectile.yy",},
   ],
 }

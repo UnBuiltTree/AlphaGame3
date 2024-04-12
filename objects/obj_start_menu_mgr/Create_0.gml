@@ -9,6 +9,8 @@ global.show_walls = false;
 global.show_explore = false;
 
 global.player_alive = false;
+global.gun_one_cooldown = 10;
+global.gun_two_cooldown = 10;
 
 // --- end global.varables ~Weston_1
 
