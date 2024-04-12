@@ -2,9 +2,9 @@
   "$GMSprite":"",
   "%Name":"spr_inv_slot",
   "bboxMode":0,
-  "bbox_bottom":31,
+  "bbox_bottom":19,
   "bbox_left":0,
-  "bbox_right":31,
+  "bbox_right":19,
   "bbox_top":0,
   "collisionKind":1,
   "collisionTolerance":0,
@@ -16,7 +16,7 @@
   ],
   "gridX":0,
   "gridY":0,
-  "height":32,
+  "height":20,
   "HTile":false,
   "layers":[
     {"$GMImageLayer":"","%Name":"f522b740-399f-413c-b944-c3a0fbde0a6e","blendMode":0,"displayName":"default","isLocked":false,"name":"f522b740-399f-413c-b944-c3a0fbde0a6e","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
@@ -86,5 +86,5 @@
   },
   "type":0,
   "VTile":false,
-  "width":32,
+  "width":20,
 }
