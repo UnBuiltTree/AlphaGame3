@@ -15,6 +15,8 @@ global.player_alive = false;
 global._base_width = 480;
 global._base_height = 270;
 
+create_item_table();
+
 menu_initialize  = function(){
 	room_set_width(rm_start_menu, global._base_width);
     room_set_height(rm_start_menu, global._base_height);
