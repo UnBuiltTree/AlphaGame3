@@ -10,9 +10,281 @@ var _wall_map_id = layer_tilemap_get_id("WallTiles");
 //setup grid
 width_ = room_width div CELL_WIDTH;
 height_ = room_height div CELL_HEIGHT;
+boundary_size_ = 6;
+min_space_distance_ = 12;
 grid_ = ds_grid_create(width_, height_);
 ds_grid_set_region(grid_, 0, 0, width_, height_, VOID);
 
+var _min_room_size = 4;
+var _max_room_size = 16;
+var _room_count = irandom_range(12, 16); // Generate between 12 to 16 rooms
+_rooms = ds_list_create();
+
+// Define spawn room size and position
+var _spawn_room_width = 6;
+var _spawn_room_height = 6;
+var _spawn_room_x = (width_ div 2) - (_spawn_room_width div 2);
+var _spawn_room_y = (height_ div 2) - (_spawn_room_height div 2);
+
+// Create and add spawn room to grid and list
+var _spawn_room = ds_map_create();
+ds_map_add(_spawn_room, "_x", _spawn_room_x);
+ds_map_add(_spawn_room, "_y", _spawn_room_y);
+ds_map_add(_spawn_room, "width", _spawn_room_width);
+ds_map_add(_spawn_room, "height", _spawn_room_height);
+ds_map_add(_spawn_room, "connected_rooms", ds_list_create()); // Ensure this is always called when making new rooms
+ds_list_add(_rooms, _spawn_room);
+
+// func to find the nearest room from the current tile x,y
+find_nearest_room = function(_rooms, _current_x, _current_y) {
+    var min_distance = infinity;
+    var nearest_room = undefined;
+    
+    for (var i = 0; i < ds_list_size(_rooms); i++) {
+        var _room = ds_list_find_value(_rooms, i);
+        var _room_x = ds_map_find_value(_room, "_x") + ds_map_find_value(_room, "width") div 2;
+        var _room_y = ds_map_find_value(_room, "_y") + ds_map_find_value(_room, "height") div 2;
+        
+        // skip if it's the current room
+        if (_room_x == _current_x && _room_y == _current_y) continue;
+
+        // calculate distance to this room
+        var _distance = point_distance(_current_x, _current_y, _room_x, _room_y);
+        
+        // update nearest room if this one is closer
+        if (_distance < min_distance) {
+            min_distance = _distance;
+            nearest_room = _room;
+        }
+    }
+    
+    return nearest_room;
+}
+
+// func to get the minimum distance to the nearest room
+min_distance_to_nearest_room = function(_rooms, _new_x, _new_y) {
+    var min_distance = infinity;
+    for (var i = 0; i < ds_list_size(_rooms); i++) {
+        var _room = ds_list_find_value(_rooms, i);
+        var _room_center_x = ds_map_find_value(_room, "_x") + ds_map_find_value(_room, "width") div 2;
+        var _room_center_y = ds_map_find_value(_room, "_y") + ds_map_find_value(_room, "height") div 2;
+        var _distance = point_distance(_new_x, _new_y, _room_center_x, _room_center_y);
+        if (_distance < min_distance) {
+            min_distance = _distance;
+        }
+    }
+    return min_distance;
+}
+
+
+//func based loosly on the original level gen, creates a pseodo random path between two tile x, y pairs
+create_path = function(start_x, start_y, end_x, end_y) {
+    var _controller_x = start_x;
+    var _controller_y = start_y;
+    var _target_x = clamp(end_x, 1, width_ - 2); // Ensure target is within bounds
+    var _target_y = clamp(end_y, 1, height_ - 2); // Ensure target is within bounds
+    var _direction_change_odds = 1; // Odds of changing direction
+    var _max_step = 500;
+    var _curr_step = 0;
+
+    while ((_controller_x != _target_x || _controller_y != _target_y) && _curr_step <= _max_step) {
+        _curr_step++;
+        var _dx = _target_x - _controller_x;
+        var _dy = _target_y - _controller_y;
+        var _move_horizontally = abs(_dx) > abs(_dy);
+
+        if (irandom(1) < _direction_change_odds && abs(_dx) != abs(_dy)) {
+            _move_horizontally = !_move_horizontally;
+        }
+
+        if (_move_horizontally && _dx != 0) {
+            _controller_x += sign(_dx);
+        } else if (_dy != 0) {
+            _controller_y += sign(_dy);
+        }
+
+        _controller_x = clamp(_controller_x, 1, width_ - 2);
+        _controller_y = clamp(_controller_y, 1, height_ - 2);
+
+        grid_[# _controller_x, _controller_y] = FLOOR;
+
+        if (_controller_x == _target_x && _controller_y == _target_y) {
+            break;
+        }
+    }
+};
+
+//used create_path() to create a path between two rooms
+connect_rooms_with_hallway = function(_room1, _room2) {
+    var _room1_x = ds_map_find_value(_room1, "_x") + ds_map_find_value(_room1, "width") div 2;
+    var _room1_y = ds_map_find_value(_room1, "_y") + ds_map_find_value(_room1, "height") div 2;
+    var _room2_x = ds_map_find_value(_room2, "_x") + ds_map_find_value(_room2, "width") div 2;
+    var _room2_y = ds_map_find_value(_room2, "_y") + ds_map_find_value(_room2, "height") div 2;
+
+    // Use the create_path function to dynamically create a path from room1 to room2
+    create_path(_room1_x, _room1_y, _room2_x, _room2_y);
+	var _room1_connections = ds_map_find_value(_room1, "connected_rooms");
+    var _room2_connections = ds_map_find_value(_room2, "connected_rooms");
+    ds_list_add(_room1_connections, _room2);
+    ds_list_add(_room2_connections, _room1);
+}
+
+//func to check if two rooms are connected
+is_connected = function(_room1, _room2) {
+    var _room1_connections = ds_map_find_value(_room1, "connected_rooms");
+    return ds_list_find_index(_room1_connections, _room2) != -1;
+};
+
+//func that draw room connection
+draw_room_connections = function(_room) {
+    var _room_connections = ds_map_find_value(_room, "connected_rooms");
+    var _room_center_x = ds_map_find_value(_room, "_x") + ds_map_find_value(_room, "width") / 2;
+    var _room_center_y = ds_map_find_value(_room, "_y") + ds_map_find_value(_room, "height") / 2;
+
+    for (var i = 0; i < ds_list_size(_room_connections); i++) {
+        var _connected_room = ds_list_find_value(_room_connections, i);
+        var _connected_center_x = ds_map_find_value(_connected_room, "_x") + ds_map_find_value(_connected_room, "width") / 2;
+        var _connected_center_y = ds_map_find_value(_connected_room, "_y") + ds_map_find_value(_connected_room, "height") / 2;
+        draw_line(_room_center_x * CELL_WIDTH, _room_center_y * CELL_HEIGHT, _connected_center_x * CELL_WIDTH, _connected_center_y*CELL_HEIGHT);
+		show_debug_message("drew connect line : "+ string(_room_center_x) + " : " + string(_room_center_y) + " : " + string(_connected_center_x) + " : " + string(_connected_center_y));
+    }
+};
+
+//func to draw all room connection in all rooms
+draw_all_room_connections = function(_rooms) {
+    for (var i = 0; i < ds_list_size(_rooms); i++) {
+        var _room = ds_list_find_value(_rooms, i);
+        draw_room_connections(_room);
+    }
+};
+
+//func to check isolated rooms and connect them to the nearest room
+connect_isolated_rooms = function(_rooms) {
+    var changes = true; // Flag to detect if any new connections were made
+
+    while (changes) {
+        changes = false; // Assume no changes will be made this pass
+
+        for (var i = 0; i < ds_list_size(_rooms); i++) {
+            var _current_room = ds_list_find_value(_rooms, i);
+            var _current_x = ds_map_find_value(_current_room, "_x");
+            var _current_y = ds_map_find_value(_current_room, "_y");
+            var _current_width = ds_map_find_value(_current_room, "width");
+            var _current_height = ds_map_find_value(_current_room, "height");
+
+            // Check if the current room is isolated using the updated is_room_isolated function
+            if (is_room_isolated(_current_x, _current_y, _current_width, _current_height)) {
+                var nearest_room = find_nearest_room(_rooms, _current_x + _current_width div 2, _current_y + _current_height div 2);
+                if (nearest_room != undefined) {
+					show_debug_message("connected rooms: " + string(_current_room) + " : "+ string(nearest_room))
+                    connect_rooms_with_hallway(_current_room, nearest_room);
+                    changes = true; // A connection was made, so changes happened
+                }
+            }
+        }
+    }
+}
+
+
+//func that checks the boundary of the room for outside connections
+is_room_isolated = function(_x, _y, _width, _height) {
+    //checks above and below the room
+    for (var ix = _x; ix <= _x + _width; ix++) {
+        if (grid_[# ix, _y - 1] == FLOOR || grid_[# ix, _y + _height + 1] == FLOOR) {
+            return false; // Connection found above or below the room
+        }
+    }
+    //checks to the left and right of the room
+    for (var iy = _y; iy <= _y + _height; iy++) {
+        if (grid_[# _x - 1, iy] == FLOOR || grid_[# _x + _width + 1, iy] == FLOOR) {
+            return false; // Connection found on the left or right of the room
+        }
+    }
+    return true; //no connection found, room is isolated
+}
+	
+	
+//room placement loop
+for (var i = 0; i < _room_count; i++) {
+    var _room_placed = false;
+    while (!_room_placed) {
+        var _room_width = irandom_range(_min_room_size, _max_room_size);
+        var _room_height = irandom_range(_min_room_size, _max_room_size);
+        
+        //ranges to keep rooms away from being out of bounds
+        var _room_x = irandom_range(boundary_size_, width_ - _room_width - boundary_size_);
+        var _room_y = irandom_range(boundary_size_, height_ - _room_height - boundary_size_);
+
+        var _room_center_x = _room_x + _room_width div 2;
+        var _room_center_y = _room_y + _room_height div 2;
+
+        //checks if the room is close enough to another room
+        if (min_distance_to_nearest_room(_rooms, _room_center_x, _room_center_y) <= min_space_distance_) {
+            var _overlap = false;
+            for (var j = 0; j < ds_list_size(_rooms); j++) {
+                var _other = ds_list_find_value(_rooms, j);
+                var _other_x = ds_map_find_value(_other, "_x");
+                var _other_y = ds_map_find_value(_other, "_y");
+                var _other_width = ds_map_find_value(_other, "width");
+                var _other_height = ds_map_find_value(_other, "height");
+                if (!(_room_x + _room_width + 4 < _other_x || _room_x > _other_x + _other_width + 4 ||
+                    _room_y + _room_height + 4 < _other_y || _room_y > _other_y + _other_height + 4)) {
+                    _overlap = true;
+                    break;
+                }
+            }
+
+            //adds room to grid if no overlap
+            if (!_overlap) {
+                var _room = ds_map_create();
+				ds_map_add(_room, "_x", _room_x);
+				ds_map_add(_room, "_y", _room_y);
+				ds_map_add(_room, "width", _room_width);
+				ds_map_add(_room, "height", _room_height);
+				ds_map_add(_room, "connected_rooms", ds_list_create());
+				ds_list_add(_rooms, _room);
+
+                //marks room space on the grid
+                for (var rx = _room_x; rx < _room_x + _room_width; rx++) {
+                    for (var ry = _room_y; ry < _room_y + _room_height; ry++) {
+                        grid_[# rx, ry] = FLOOR;
+                    }
+                }
+                _room_placed = true;
+            }
+        }
+    }
+}
+
+
+// Connect isolated rooms
+connect_isolated_rooms(_rooms);
+
+// Number of random connections
+var num_random_connections = irandom_range(1, ds_list_size(_rooms)/2);
+
+// --- This is not perfect, still need a way to check for and connect isolated groups of rooms.
+
+// -- brute force method if all rooms really need to be connected, looks bad.
+/*
+// Ensure every room is connected at least once
+for (var i = 0; i < ds_list_size(_rooms) - 1; i++) {
+    connect_rooms_with_hallway(ds_list_find_value(_rooms, i), ds_list_find_value(_rooms, i + 1));
+}*/
+
+//adds random connections
+for (var j = 0; j < num_random_connections; j++) {
+    var room_index1 = irandom(ds_list_size(_rooms) - 1);
+    var room_index2 = irandom(ds_list_size(_rooms) - 1);
+    while (room_index1 == room_index2) {  // Ensure different rooms
+        room_index2 = irandom(ds_list_size(_rooms) - 1);
+    }
+    connect_rooms_with_hallway(ds_list_find_value(_rooms, room_index1), ds_list_find_value(_rooms, room_index2));
+}
+
+
+// --- original level gen
+/*
 //create the controller
 var _controller_x = width_ div 2;
 var _controller_y = height_ div 2;
@@ -29,48 +301,9 @@ var _target_step = irandom(_steps)
 
 var _branch_x = _controller_x;
 var _branch_y = _controller_y;
+*/
 
-repeat (_steps){
-	_step_num++;
-	show_debug_message(string(_step_num))
-	show_debug_message("Target step"+string(_target_step))
-	//take current controller position, and sets it to a floor
-	if (_step_num == _target_step){
-		grid_[# _controller_x, _controller_y] = BRANCH_SEED;
-		_branch_x = _controller_x;
-		_branch_y = _controller_y;
-	} else {
-		grid_[# _controller_x, _controller_y] = FLOOR;
-	}
-	
-	//randomize direction
-	if(irandom(_direction_change_odds) == _direction_change_odds){
-		
-		_controller_direction = irandom(3);
-	}
-	
-	//move controller
-	var _x_direction = lengthdir_x(1, _controller_direction * 90);
-	var _y_direction = lengthdir_y(1, _controller_direction * 90);
-	
-	_controller_x += _x_direction;
-	_controller_y += _y_direction;
-	
-	//make sure we don't go outside the grid
-	if (_controller_x < 2 || _controller_x >= width_ -2){
-		
-		//instead of going forward once (out of the bounds), it takes us 2 tiles back. (x)
-		_controller_x += -_x_direction * 2;
-	}
-	
-	if (_controller_y < 2 || _controller_y >= height_ -2){
-		
-		//instead of going forward once (out of the bounds), it takes us 2 tiles back. (y)
-		_controller_y += -_y_direction * 2;
-	
-	}
-}
-
+/*
 var _branch_controller_x = _branch_x;
 var _branch_controller_y = _branch_y;
 
@@ -137,14 +370,17 @@ while (_not_reach_end){
 	
 	}
 }
-	
+*/	
+
 ds_grid_set_region(grid_, width_/2+3, height_/2+3, width_/2-3, height_/2-3, FLOOR);
+
 //--- What this does is create a copy of the skinny hallway gid to compare. Adds an FLOOR tile outline to it making eveything wider and more open
 // copy the grid for checking
 var grid_copy = ds_grid_create(width_, height_);
 ds_grid_copy(grid_copy, grid_);
 
 // loop for converting VOID tiles next to FLOOR tiles into FLOOR
+
 for (var _y = 0; _y < height_; _y++) {
     for (var _x = 0; _x < width_; _x++) {
         // proceeds if the current tile is VOID in the original grid
@@ -176,9 +412,9 @@ for (var _y = 0; _y < height_; _y++) {
         }
     }
 }
-
 // cleanup: destroy the copied grid after use to free up resources
 ds_grid_destroy(grid_copy);
+
 
 //--- What this does is create a copy of the skinny hallway gid to compare. Adds an WALL tile outline
 // copy the grid for checking
