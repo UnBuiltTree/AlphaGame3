@@ -10,7 +10,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 		if (player_local_id == 0){
 			
 			particle_manager();
-			collision_manager();
+			collision_manager(true, false);
 			
 			if (player_curr_health < 0){
 				instance_destroy(self)

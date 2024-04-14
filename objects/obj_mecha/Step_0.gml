@@ -93,7 +93,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			
 			// end keybaord movement control
 			
-			if (keyboard_check(vk_space) || mouse_check_button(mb_left))
+			if (mouse_check_button(mb_left))
 				{
 					var _trigger_type = "gun_left";
 					trigger_pressed(_trigger_type);
