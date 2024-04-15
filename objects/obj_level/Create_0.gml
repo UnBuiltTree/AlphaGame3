@@ -254,6 +254,12 @@ place_room = function(_room_type){
 		        var _real_room_x = _room_x;
 				var _real_room_y = _room_y;
 		        break;
+			case "mecha+spawn_1":
+				var _real_room_width = 7;
+				var _real_room_height = 7;
+		        var _real_room_x = _room_x;
+				var _real_room_y = _room_y;
+		        break;
 		    default:
 		        var _real_room_width = _room_width;
 				var _real_room_height = _room_height;
@@ -297,11 +303,18 @@ place_room = function(_room_type){
                         grid_[# rx, ry] = FLOOR;
                     }
                 }
-				if (_room_type == "spawn_1") {
-	                var center_x = _real_room_x + _real_room_width div 2;
-	                var center_y = _real_room_y + _real_room_height div 2;
-	                grid_[# center_x, center_y] = PLAYER_SPAWN;
-	            }
+				switch (_room_type) {
+				    case "spawn_1":
+						var center_x = _real_room_x + _real_room_width div 2;
+			                var center_y = _real_room_y + _real_room_height div 2;
+			                grid_[# center_x, center_y] = PLAYER_SPAWN;
+				        break;
+					case "mecha_spawn_1":
+						 var center_x = _real_room_x + _real_room_width div 2;
+			                var center_y = _real_room_y + _real_room_height div 2;
+			                grid_[# center_x, center_y] = MECHA_SPAWN;
+				        break;
+				}
                 _room_placed = true;
 				connect_isolated_rooms(_rooms);
             }
@@ -310,7 +323,11 @@ place_room = function(_room_type){
 }
 
 //room placement loop
-place_room("spawn_1")
+place_room("spawn_1"); _room_count--;
+place_room("basic_1"); _room_count--;
+place_room("basic_1"); _room_count--;
+place_room("basic_1"); _room_count--;
+place_room("mecha_spawn_1"); _room_count--;
 for (var i = 0; i < _room_count; i++) {
     place_room("basic_1")
 }

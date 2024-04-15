@@ -11,7 +11,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			
 			// Check for collision at the new position
 			particle_manager();
-			collision_manager(true);
+			collision_manager(true, false);
 			
 			if (mecha_curr_health > mecha_max_health){
 				mecha_curr_health -= 0.6;
@@ -96,7 +96,7 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 			if (mouse_check_button(mb_left))
 				{
 					var _trigger_type = "gun_left";
-					trigger_pressed(_trigger_type);
+					trigger_pressed(_trigger_type, _mecha_guns);
 				}
 				
 			if (global.gun_one_cooldown >= 0){
