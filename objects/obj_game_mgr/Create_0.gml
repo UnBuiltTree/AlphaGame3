@@ -21,6 +21,9 @@ spawn_player = function(_x, _y){
 	var boost_bar = instance_create_layer(16, 26,"Hud", obj_boost_bar);
 }
 
+create_item_table()
+create_gun_table()
+
 window_set_cursor(cr_none);
 var _ground = instance_create_layer(room_width/2, room_height/2,"Ground", obj_test_tile);
 var _level = instance_create_layer(room_width/2, room_height/2,"Level", obj_level);
