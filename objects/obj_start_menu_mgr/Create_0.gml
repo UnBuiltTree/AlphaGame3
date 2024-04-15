@@ -7,6 +7,7 @@ global.cheat_mode = false;
 global.hide_shadows = false;
 global.show_walls = false;
 global.show_explore = false;
+global.zoom_out = false;
 
 global.player_alive = false;
 global.gun_one_cooldown = 10;

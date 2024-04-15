@@ -17,7 +17,7 @@ if (global.debug_mode){
 	
 	draw_line(x, y+ycenter_offset, mouse_x, mouse_y)
 	
-	draw_circle(mouse_x, mouse_y, 4, false);
+	//draw_circle(mouse_x, mouse_y, 4, false);
 	
 	draw_set_color(c_fuchsia);
 	
@@ -52,7 +52,8 @@ if (global.debug_mode){
 } else {
 	draw_set_color(c_blue);
 	
-	draw_circle(mouse_x, mouse_y, 4, true);
+	//draw_circle(mouse_x, mouse_y, 4, true);
+	draw_sprite_ext(spr_crosshair, 0, mouse_x, mouse_y, 1, 1, 0, c_blue, 1)
 	
 	draw_set_color(c_white);
 }

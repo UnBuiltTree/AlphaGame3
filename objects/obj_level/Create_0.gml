@@ -173,7 +173,7 @@ draw_room_connections = function(_room) {
         var _connected_center_x = ds_map_find_value(_connected_room, "_x") + ds_map_find_value(_connected_room, "width") / 2;
         var _connected_center_y = ds_map_find_value(_connected_room, "_y") + ds_map_find_value(_connected_room, "height") / 2;
         draw_line(_room_center_x * CELL_WIDTH, _room_center_y * CELL_HEIGHT, _connected_center_x * CELL_WIDTH, _connected_center_y*CELL_HEIGHT);
-		show_debug_message("drew connect line : "+ string(_room_center_x) + " : " + string(_room_center_y) + " : " + string(_connected_center_x) + " : " + string(_connected_center_y));
+		//show_debug_message("drew connect line : "+ string(_room_center_x) + " : " + string(_room_center_y) + " : " + string(_connected_center_x) + " : " + string(_connected_center_y));
     }
 };
 

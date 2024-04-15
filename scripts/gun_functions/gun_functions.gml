@@ -48,11 +48,11 @@ function create_gun_table() {
         info: "A rapid fire machine gun for sustained close quarters combat",
         fire_rate: 10, 
         bullet_spread: 5,
-        bullet_speed: 50,
+        bullet_speed: 5,
 		bullet_bounce: false,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
-		projectile_spr: spr_projectile,
+		projectile_spr: spr_projectile_small,
         projectile_type: "small_bullet"
     };
 
@@ -61,13 +61,13 @@ function create_gun_table() {
         name: "Player_Assault_gun",
         type: "Gun_Module",
         info: "An auto fire gun for sustained mid-range combat",
-        fire_rate: 7,
+        fire_rate: 20,
         bullet_spread: 3,
         bullet_speed: 7,
 		bullet_bounce: false,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
-		projectile_spr: spr_projectile,
+		projectile_spr: spr_projectile_big,
         projectile_type: "medium_bullet"
     };
 
@@ -76,13 +76,13 @@ function create_gun_table() {
         name: "Player_AntiMat_gun",
         type: "Gun_Module",
         info: "A single fire gun, bolt slugger for long-range sniping",
-        fire_rate: 1,
+        fire_rate: 50,
         bullet_spread: 1,
         bullet_speed: 10,
 		bullet_bounce: false,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
-		projectile_spr: spr_projectile,
+		projectile_spr: spr_projectile_big,
         projectile_type: "high_impact_bullet"
     };
 
@@ -94,10 +94,10 @@ function create_gun_table() {
         fire_rate: 8,
         bullet_spread: 4,
         bullet_speed: 3,
-		bullet_bounce: false,
+		bullet_bounce: true,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
-		projectile_spr: spr_projectile,
+		projectile_spr: spr_projectile_plasma,
         projectile_type: "plasma_blast"
     };
 }
@@ -144,7 +144,7 @@ function find_gun_module(_inventory){
     return "No Gun Module found"; // Return default message if no gun module is found
 }
 	
-function create_projectile( _x, _y, _projectile_vert_offset, _rot, _gun_type, _add_xspeed, _add_yspeed)
+function create_projectile( _x, _y, _projectile_vert_offset, _rot, _gun_type, _cooldown, _add_xspeed, _add_yspeed)
 {
 	// Offsets for players gun position
 	var _projectile_properties = global.guns[_gun_type];
@@ -175,5 +175,14 @@ function create_projectile( _x, _y, _projectile_vert_offset, _rot, _gun_type, _a
 	_new_projectile.sprite_index = _projectile_properties.projectile_spr;
 	_new_projectile.lifespan = _projectile_properties.bullet_lifespan;
 	_new_projectile.lifespan_rnd = _projectile_properties.bullet_lifespan_rng;
+	switch (_cooldown) {
+	    case "gun_one_cooldown":
+	        global.gun_one_cooldown = _projectile_properties.fire_rate;
+	        break;
+		case "gun_two_cooldown":
+	        global.gun_two_cooldown = _projectile_properties.fire_rate;
+	        break;
+	}
+	
 	
 }

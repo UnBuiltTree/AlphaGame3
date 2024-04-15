@@ -101,10 +101,9 @@ trigger_pressed = function(_trigger_type, _player_gun)
 			{
 				// Resets the fire cooldown, uses special burt mode for auto cannon
 				//show_debug_message("gun1 fired:" + string(global.gun_one_cooldown))
-				global.gun_one_cooldown = 20;
 				// Creates a projectile
 				_direction = point_direction(x, y+ycenter_offset, mouse_x, mouse_y)
-				create_projectile(x, y, ycenter_offset, _direction, _player_gun.primary_gun, hspeed, vspeed);
+				create_projectile(x, y, ycenter_offset, _direction, _player_gun.primary_gun, "gun_one_cooldown", hspeed, vspeed);
 			}
 	        break;
 	}

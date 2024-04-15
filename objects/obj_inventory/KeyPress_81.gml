@@ -1,1 +1,1 @@
-inventory_remove(id, irandom(2));
+inventory_remove(id, irandom(4));

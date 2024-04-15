@@ -49,7 +49,7 @@ if (global.debug_mode){
 } else {
 	draw_set_color(c_blue);
 	
-	draw_circle(mouse_x, mouse_y, 4, true);
+	draw_sprite_ext(spr_crosshair, 1, mouse_x, mouse_y, 1, 1, 0, c_blue, 1)
 	
 	draw_set_color(c_white);
 }

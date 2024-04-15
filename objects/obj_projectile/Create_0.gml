@@ -14,7 +14,7 @@ initialize_projectile  = function(_projectile_type, _direction, _add_xspeed, _ad
 			speed = 4;
 			bounce = true;
 			spread = 8;
-	        sprite_index = spr_projectile;
+	        sprite_index = spr_projectile_plasma;
 			lifespan = 16;
 			lifespan_rnd = 2;
 	        break;
@@ -22,7 +22,7 @@ initialize_projectile  = function(_projectile_type, _direction, _add_xspeed, _ad
 	        speed = 4;
 			bounce = false;
 			spread = 8;
-	        sprite_index = spr_projectile;
+	        sprite_index = spr_projectile_plasma;
 			lifespan = 16;
 			lifespan_rnd = 2;
 	        break;

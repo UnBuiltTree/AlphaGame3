@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_projectile",
-    "path":"sprites/spr_projectile/spr_projectile.yy",
+    "name":"spr_projectile_plasma",
+    "path":"sprites/spr_projectile_plasma/spr_projectile_plasma.yy",
   },
   "spriteMaskId":null,
   "visible":true,
