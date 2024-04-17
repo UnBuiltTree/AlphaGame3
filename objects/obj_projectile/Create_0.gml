@@ -11,7 +11,7 @@ initialize_projectile  = function(_projectile_type, _direction, _add_xspeed, _ad
 	*/
 	switch (_projectile_type) {
 	    case "player_projectile":
-			speed = 4;
+			_speed = 4;
 			bounce = true;
 			spread = 8;
 	        sprite_index = spr_projectile_plasma;
@@ -19,7 +19,7 @@ initialize_projectile  = function(_projectile_type, _direction, _add_xspeed, _ad
 			lifespan_rnd = 2;
 	        break;
 	    default:
-	        speed = 4;
+	        _speed = 4;
 			bounce = false;
 			spread = 8;
 	        sprite_index = spr_projectile_plasma;
@@ -32,8 +32,13 @@ initialize_projectile  = function(_projectile_type, _direction, _add_xspeed, _ad
 	spread_limit = 100;
 	_spread = random_range(spread*-1, spread);
 	_lifespan = lifespan + random_range(lifespan_rnd*-1, lifespan_rnd);
+
+}
+
+set_projectile = function(_speed, _direction, _add_xspeed, _add_yspeed){
 	alarm[0] = _lifespan * 6
 	direction = _direction
+	speed = _speed;
 	hspeed += _add_xspeed;
 	vspeed += _add_yspeed;
 }

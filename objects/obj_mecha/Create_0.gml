@@ -52,7 +52,7 @@ mecha_initialize = function(){
 	torso_spr = spr_torso
 	alarm[1] = _frame_rate;
 	
-	create_inventory();
+	inventory = create_inventory();
 	show_debug_message("Mecha Created")
 }
 
@@ -103,7 +103,7 @@ trigger_pressed = function(_trigger_type, _player_gun)
 				//show_debug_message("gun1 fired:" + string(global.gun_one_cooldown))
 				// Creates a projectile
 				_direction = point_direction(x, y+ycenter_offset, mouse_x, mouse_y)
-				create_projectile(x, y, ycenter_offset, _direction, _player_gun.primary_gun, "gun_one_cooldown", hspeed, vspeed);
+				create_projectile(x, y, ycenter_offset, _direction, obj_inventory.inventory, "gun_one_cooldown", hspeed, vspeed);
 			}
 	        break;
 	}

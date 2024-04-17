@@ -32,6 +32,30 @@ function create_item_table(){
 		type: "Gun_Module",
 	    info: "A rapid fire energy weapon, usefull for close-range crowd control"
 	};
+	global.items[6] = {
+		num_: 6,
+	    name: "Bounce Module",
+		type: "Upgrade_Module",
+	    info: "A Module that makes projectiles bounce off of walls"
+	};
+	global.items[7] = {
+		num_: 7,
+	    name: "Fire Rate Module",
+		type: "Upgrade_Module",
+	    info: "A Module that makes"
+	};
+	global.items[8] = {
+		num_: 8,
+	    name: "Speed Increase Module",
+		type: "Upgrade_Module",
+	    info: "A Module that makes"
+	};
+	global.items[9] = {
+		num_: 9,
+	    name: "Speed Decrease Module",
+		type: "Upgrade_Module",
+	    info: "A Module that makes"
+	};
 
 	// add more items and modules here other items
 
@@ -107,27 +131,51 @@ function initialize_player_guns() {
         primary_gun: 2,
         secondary_gun: 3
     };
+	
+	global._primary_gun_tags = ds_list_create();
+	global._secondary_gun_tags = ds_list_create();
 
     return global.mecha_guns;
-}
-
-function modify_gun(player, gun_type, attribute, _set_attribute_as) {
-    if (gun_type == "primary" && player.primary_gun != undefined) {
-        player.primary_gun[attribute] = _set_attribute_as;
-        show_debug_message("Primary gun upgraded: " + attribute + " increased by " + string(increment));
-    } else if (gun_type == "secondary" && player.secondary_gun != undefined) {
-        player.secondary_gun[attribute] = _set_attribute_as;
-        show_debug_message("Secondary gun upgraded: " + attribute + " increased by " + string(increment));
-    } else {
-        show_debug_message("Upgrade failed");
-    }
 }
 
 function build_gun(_inventory) {
 	_gun = find_gun_module(_inventory);
 	show_debug_message(string(_gun))
+	for (var i = 0; i < array_length(_inventory); i++) {
+		var _module = find_upgrade_module(_inventory, i);
+		ds_list_add(global._primary_gun_tags, _module)
+		show_debug_message("tag loop: "+ string(i))
+	}
+	for (var i = 0; i < ds_list_size(global._primary_gun_tags); i++){
+		var _tag = ds_list_find_value(global._primary_gun_tags, i)
+		var _projectile_properties = global.guns[_gun];
+		var _projectile_original = _projectile_properties;
+		switch (_tag) {
+		    case 6:
+		        show_debug_message("BOUNCE TAG")
+				_projectile_properties.bullet_bounce = true;
+		        break;
+			case 7:
+		        show_debug_message("FIRERATE+")
+				_projectile_properties.fire_rate -= 20;
+		        break;
+			case 8:
+		        show_debug_message("SPEED +")
+				_projectile_properties.bullet_speed = _projectile_original.bullet_speed + 50;
+		        break;
+			case 9:
+		        show_debug_message("SPEED -")
+				_projectile_properties.bullet_speed = _projectile_original.bullet_speed - 50;
+		        break;
+		    default:
+		        
+		        break;
+		}
+		
+	}
 	global.mecha_guns.primary_gun = _gun;
 	//obj_mecha._mecha_guns._gun_type
+	return _projectile_properties;
 }
 
 function find_gun_module(_inventory){
@@ -137,17 +185,32 @@ function find_gun_module(_inventory){
 			show_debug_message("Item id:" + string(item_id));
             var item_info = global.items[item_id]; // get item information from the array
             if (item_info.type == "Gun_Module") {
+				show_debug_message("Gun_Module found: " + string(item_info.num_));
                 return item_info.num_;
             }
         }
     }
     return "No Gun Module found"; // Return default message if no gun module is found
 }
+
+function find_upgrade_module(_inventory, _slot){
+	var item_id = _inventory[_slot];
+    if ((item_id != -1)&&(item_id != 0)) { // checks if the slot is not empty
+		var item_info = global.items[item_id]; // get item information from the array
+		show_debug_message("Module item_info:" + string(item_id));
+		if (item_info.type == "Upgrade_Module") {
+			show_debug_message("Module name:" + string(item_info.name));
+			return item_info.num_;
+		}
+	}
+    return "No Gun Module found"; // Return default message if no gun module is found
+}
 	
-function create_projectile( _x, _y, _projectile_vert_offset, _rot, _gun_type, _cooldown, _add_xspeed, _add_yspeed)
+function create_projectile( _x, _y, _projectile_vert_offset, _rot, _inventory, _cooldown, _add_xspeed, _add_yspeed)
 {
 	// Offsets for players gun position
-	var _projectile_properties = global.guns[_gun_type];
+	var _projectile_properties = build_gun(_inventory);
+	
 	_projectile_offset = 0;
 	
 	if (_projectile_properties == undefined) {
@@ -169,7 +232,6 @@ function create_projectile( _x, _y, _projectile_vert_offset, _rot, _gun_type, _c
 	var _new_projectile = instance_create_layer(_projectile_pos_x, _projectile_pos_y, "Projectiles", obj_projectile);
     _new_projectile.owner = self;	
 	_new_projectile.initialize_projectile(_projectile_properties.projectile_type, _direction, _add_xspeed, _add_yspeed);
-	_new_projectile.speed = _projectile_properties.bullet_speed;
 	_new_projectile.bounce = _projectile_properties.bullet_bounce;
 	_new_projectile.spread = _projectile_properties.bullet_spread;
 	_new_projectile.sprite_index = _projectile_properties.projectile_spr;
@@ -183,6 +245,7 @@ function create_projectile( _x, _y, _projectile_vert_offset, _rot, _gun_type, _c
 	        global.gun_two_cooldown = _projectile_properties.fire_rate;
 	        break;
 	}
+	_new_projectile.set_projectile(_projectile_properties.bullet_speed, _direction, _add_xspeed, _add_yspeed);
 	
 	
 }
