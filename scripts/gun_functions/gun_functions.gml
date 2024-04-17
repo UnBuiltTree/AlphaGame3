@@ -202,13 +202,13 @@ function build_gun(_inventory) {
             case 8:
                 //show_debug_message("SPEED +");
 				_plus_speed_num++;
-                _projectile_properties.bullet_speed = _projectile_original.bullet_speed +((_projectile_original.bullet_speed/2) * _plus_speed_num);
+                _projectile_properties.bullet_speed = _projectile_original.bullet_speed +((_projectile_original.bullet_speed/2) * _plus_speed_num)-((_projectile_original.bullet_speed/4) * _minus_speed_num);
                 break;
             case 9:
                 //show_debug_message("SPEED -");
 				_minus_speed_num++;
 				if (_minus_speed_num < 4){
-					_projectile_properties.bullet_speed = _projectile_original.bullet_speed -((_projectile_original.bullet_speed/4) * _minus_speed_num);
+					_projectile_properties.bullet_speed = _projectile_original.bullet_speed -((_projectile_original.bullet_speed/4) * _minus_speed_num)+((_projectile_original.bullet_speed/2) * _plus_speed_num);
 				} else {
 					_projectile_properties.bullet_speed = 0.25;
 				}
