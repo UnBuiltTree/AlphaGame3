@@ -42,19 +42,19 @@ function create_item_table(){
 		num_: 7,
 	    name: "Fire Rate Module",
 		type: "Upgrade_Module",
-	    info: "A Module that makes"
+	    info: "Module that makes your gun fire rate faster, max of five"
 	};
 	global.items[8] = {
 		num_: 8,
 	    name: "Speed Increase Module",
 		type: "Upgrade_Module",
-	    info: "A Module that makes"
+	    info: "Module that makes your gun fire faster projectiles"
 	};
 	global.items[9] = {
 		num_: 9,
 	    name: "Speed Decrease Module",
 		type: "Upgrade_Module",
-	    info: "A Module that makes"
+	    info: "Module that makes your gun fire slower projectiles"
 	};
 
 	// add more items and modules here other items
@@ -137,46 +137,82 @@ function initialize_player_guns() {
 
     return global.mecha_guns;
 }
+	
+function copy_gun(_index) {
+    var original = global.guns[_index];
+    var copy = {};
+
+    // copy each trait
+    copy.num_ = original.num_;
+    copy.name = original.name;
+    copy.type = original.type;
+    copy.info = original.info;
+    copy.fire_rate = original.fire_rate;
+    copy.bullet_spread = original.bullet_spread;
+    copy.bullet_speed = original.bullet_speed;
+    copy.bullet_bounce = original.bullet_bounce;
+    copy.bullet_lifespan = original.bullet_lifespan;
+    copy.bullet_lifespan_rng = original.bullet_lifespan_rng;
+    copy.projectile_spr = original.projectile_spr;
+    copy.projectile_type = original.projectile_type;
+
+    return copy;
+}
 
 function build_gun(_inventory) {
-	_gun = find_gun_module(_inventory);
-	show_debug_message(string(_gun))
-	for (var i = 0; i < array_length(_inventory); i++) {
-		var _module = find_upgrade_module(_inventory, i);
-		ds_list_add(global._primary_gun_tags, _module)
-		show_debug_message("tag loop: "+ string(i))
-	}
-	for (var i = 0; i < ds_list_size(global._primary_gun_tags); i++){
-		var _tag = ds_list_find_value(global._primary_gun_tags, i)
-		var _projectile_properties = global.guns[_gun];
-		var _projectile_original = _projectile_properties;
-		switch (_tag) {
-		    case 6:
-		        show_debug_message("BOUNCE TAG")
-				_projectile_properties.bullet_bounce = true;
-		        break;
-			case 7:
-		        show_debug_message("FIRERATE+")
-				_projectile_properties.fire_rate -= 20;
-		        break;
-			case 8:
-		        show_debug_message("SPEED +")
-				_projectile_properties.bullet_speed = _projectile_original.bullet_speed + 50;
-		        break;
-			case 9:
-		        show_debug_message("SPEED -")
-				_projectile_properties.bullet_speed = _projectile_original.bullet_speed - 50;
-		        break;
-		    default:
-		        
-		        break;
-		}
-		
-	}
-	global.mecha_guns.primary_gun = _gun;
-	//obj_mecha._mecha_guns._gun_type
-	return _projectile_properties;
+    _gun = find_gun_module(_inventory);
+    show_debug_message(string(_gun));
+
+    // Ensures the tag list is created and clears it each time this function is called
+    if (!ds_exists(global._primary_gun_tags, ds_type_list)) {
+        global._primary_gun_tags = ds_list_create();
+    } else {
+        ds_list_clear(global._primary_gun_tags);
+    }
+
+    // creates the tag list from the inventory
+    for (var i = 0; i < array_length(_inventory); i++) {
+        var _module = find_upgrade_module(_inventory, i);
+        ds_list_add(global._primary_gun_tags, _module);
+        show_debug_message("tag loop: " + string(i));
+    }
+
+    // copies the original gun properties
+    var _projectile_original = global.guns[_gun];
+    var _projectile_properties = copy_gun(_gun);
+    var _num = 0;  // Counter for "FIRERATE+" tags
+
+    // apply effects based on tags
+    for (var i = 0; i < ds_list_size(global._primary_gun_tags); i++) {
+        var _tag = ds_list_find_value(global._primary_gun_tags, i);
+        switch (_tag) {
+            case 6:
+                //show_debug_message("BOUNCE TAG");
+                _projectile_properties.bullet_bounce = true;
+                break;
+            case 7:
+                //show_debug_message("FIRERATE +");
+                _num++;  // Increment for each increase firerate tag
+				if (_num < 6){
+					_projectile_properties.fire_rate = _projectile_original.fire_rate -((_projectile_original.fire_rate/6) * _num);
+				}
+				break;
+            case 8:
+                //show_debug_message("SPEED +");
+                _projectile_properties.bullet_speed += 10;
+                break;
+            case 9:
+                //show_debug_message("SPEED -");
+                _projectile_properties.bullet_speed -= 10;
+                break;
+        }
+        show_debug_message("fire_rate num: " + string(_num));
+    }
+
+    global.mecha_guns.primary_gun = _gun;
+    return _projectile_properties;
 }
+
 
 function find_gun_module(_inventory){
     for (var i = 0; i < array_length(_inventory); i++) {
