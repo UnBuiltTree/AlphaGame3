@@ -99,7 +99,7 @@ function create_gun_table() {
 		num_: 3,
         name: "Player_AntiMat_gun",
         type: "Gun_Module",
-        info: "A single fire gun, bolt slugger for long-range sniping",
+        info: "A slow fire gun, bolt slugger for long-range sniping",
         fire_rate: 50,
         bullet_spread: 1,
         bullet_speed: 10,
