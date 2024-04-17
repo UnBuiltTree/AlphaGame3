@@ -180,7 +180,9 @@ function build_gun(_inventory) {
     // copies the original gun properties
     var _projectile_original = global.guns[_gun];
     var _projectile_properties = copy_gun(_gun);
-    var _num = 0;  // Counter for "FIRERATE+" tags
+    var _fire_rate_num = 0;  // Counter for "FIRERATE+" tags
+	var _plus_speed_num = 0;  // Counter for "FIRERATE+" tags
+	var _minus_speed_num = 0;  // Counter for "FIRERATE+" tags
 
     // apply effects based on tags
     for (var i = 0; i < ds_list_size(global._primary_gun_tags); i++) {
@@ -192,21 +194,27 @@ function build_gun(_inventory) {
                 break;
             case 7:
                 //show_debug_message("FIRERATE +");
-                _num++;  // Increment for each increase firerate tag
-				if (_num < 6){
-					_projectile_properties.fire_rate = _projectile_original.fire_rate -((_projectile_original.fire_rate/6) * _num);
+                _fire_rate_num++;  // Increment for each increase firerate tag
+				if (_fire_rate_num < 6){
+					_projectile_properties.fire_rate = _projectile_original.fire_rate -((_projectile_original.fire_rate/6) * _fire_rate_num);
 				}
 				break;
             case 8:
                 //show_debug_message("SPEED +");
-                _projectile_properties.bullet_speed += 10;
+				_plus_speed_num++;
+                _projectile_properties.bullet_speed = _projectile_original.bullet_speed +((_projectile_original.bullet_speed/2) * _plus_speed_num);
                 break;
             case 9:
                 //show_debug_message("SPEED -");
-                _projectile_properties.bullet_speed -= 10;
-                break;
+				_minus_speed_num++;
+				if (_minus_speed_num < 4){
+					_projectile_properties.bullet_speed = _projectile_original.bullet_speed -((_projectile_original.bullet_speed/4) * _minus_speed_num);
+				} else {
+					_projectile_properties.bullet_speed = 0.25;
+				}
+				break;
         }
-        show_debug_message("fire_rate num: " + string(_num));
+        show_debug_message("fire_rate num: " + string(_fire_rate_num));
     }
 
     global.mecha_guns.primary_gun = _gun;

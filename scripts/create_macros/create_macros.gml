@@ -15,4 +15,4 @@
 #macro SOUTH 8
 
 //--- inventory macros
-#macro INVENTORY_SLOTS 6
+#macro INVENTORY_SLOTS 8
