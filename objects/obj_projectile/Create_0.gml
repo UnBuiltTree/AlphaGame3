@@ -37,7 +37,7 @@ initialize_projectile  = function(_projectile_type, _direction, _add_xspeed, _ad
 
 set_projectile = function(_speed, _direction, _add_xspeed, _add_yspeed){
 	alarm[0] = _lifespan * 6
-	direction = _direction
+	direction = _direction + _spread;
 	speed = _speed;
 	hspeed += _add_xspeed;
 	vspeed += _add_yspeed;

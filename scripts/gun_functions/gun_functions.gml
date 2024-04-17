@@ -183,6 +183,8 @@ function build_gun(_inventory) {
     var _fire_rate_num = 0;  // Counter for "FIRERATE+" tags
 	var _plus_speed_num = 0;  // Counter for "FIRERATE+" tags
 	var _minus_speed_num = 0;  // Counter for "FIRERATE+" tags
+	var _num_bullet_spread = 0;
+	
 
     // apply effects based on tags
     for (var i = 0; i < ds_list_size(global._primary_gun_tags); i++) {
@@ -191,22 +193,26 @@ function build_gun(_inventory) {
             case 6:
                 //show_debug_message("BOUNCE TAG");
                 _projectile_properties.bullet_bounce = true;
+				_num_bullet_spread += 2;
                 break;
             case 7:
                 //show_debug_message("FIRERATE +");
                 _fire_rate_num++;  // Increment for each increase firerate tag
 				if (_fire_rate_num < 6){
+					_num_bullet_spread += 1;
 					_projectile_properties.fire_rate = _projectile_original.fire_rate -((_projectile_original.fire_rate/6) * _fire_rate_num);
 				}
 				break;
             case 8:
                 //show_debug_message("SPEED +");
+				_num_bullet_spread+=1;
 				_plus_speed_num++;
                 _projectile_properties.bullet_speed = _projectile_original.bullet_speed +((_projectile_original.bullet_speed/2) * _plus_speed_num)-((_projectile_original.bullet_speed/4) * _minus_speed_num);
                 break;
             case 9:
                 //show_debug_message("SPEED -");
 				_minus_speed_num++;
+				_num_bullet_spread-=1;
 				if (_minus_speed_num < 4){
 					_projectile_properties.bullet_speed = _projectile_original.bullet_speed -((_projectile_original.bullet_speed/4) * _minus_speed_num)+((_projectile_original.bullet_speed/2) * _plus_speed_num);
 				} else {
@@ -214,6 +220,7 @@ function build_gun(_inventory) {
 				}
 				break;
         }
+		_projectile_properties.bullet_spread = _projectile_original.bullet_spread+((_projectile_original.bullet_spread/2)*_num_bullet_spread);
         show_debug_message("fire_rate num: " + string(_fire_rate_num));
     }
 
