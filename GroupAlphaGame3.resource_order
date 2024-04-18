@@ -1,7 +1,9 @@
 {
   "FolderOrderSettings":[
+    {"name":"Enemy","order":4,"path":"folders/Objects/Actors/Enemy.yy",},
     {"name":"Level","order":1,"path":"folders/Objects/Actors/Level.yy",},
     {"name":"Player","order":2,"path":"folders/Objects/Actors/Player.yy",},
+    {"name":"Enemy","order":5,"path":"folders/Sprites/Actors/Enemy.yy",},
   ],
   "ResourceOrderSettings":[
     {"name":"obj_explore_mgr","order":1,"path":"objects/obj_explore_mgr/obj_explore_mgr.yy",},
@@ -10,12 +12,12 @@
     {"name":"collision_manager","order":3,"path":"scripts/collision_manager/collision_manager.yy",},
     {"name":"gun_functions","order":2,"path":"scripts/gun_functions/gun_functions.yy",},
     {"name":"inventory_functions","order":1,"path":"scripts/inventory_functions/inventory_functions.yy",},
+    {"name":"spr_crosshair","order":4,"path":"sprites/spr_crosshair/spr_crosshair.yy",},
     {"name":"spr_inv_box","order":2,"path":"sprites/spr_inv_box/spr_inv_box.yy",},
     {"name":"spr_inv_slot","order":1,"path":"sprites/spr_inv_slot/spr_inv_slot.yy",},
     {"name":"spr_item","order":3,"path":"sprites/spr_item/spr_item.yy",},
     {"name":"spr_projectile_big","order":3,"path":"sprites/spr_projectile_big/spr_projectile_big.yy",},
     {"name":"spr_projectile_plasma","order":1,"path":"sprites/spr_projectile_plasma/spr_projectile_plasma.yy",},
     {"name":"spr_projectile_small","order":4,"path":"sprites/spr_projectile_small/spr_projectile_small.yy",},
-    {"name":"spr_crosshair","order":4,"path":"sprites/spr_crosshair/spr_crosshair.yy",},
   ],
 }

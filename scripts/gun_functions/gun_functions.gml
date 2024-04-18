@@ -97,7 +97,8 @@ function create_gun_table() {
         fire_rate: 10, 
         bullet_spread: 5,
         bullet_speed: 5,
-		bullet_bounce: -1,
+		bullet_bounce: 0,
+		penetrative_value: 0,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
 		projectile_spr: spr_projectile_small,
@@ -112,7 +113,8 @@ function create_gun_table() {
         fire_rate: 20,
         bullet_spread: 3,
         bullet_speed: 7,
-		bullet_bounce: -1,
+		bullet_bounce: 0,
+		penetrative_value: 0,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
 		projectile_spr: spr_projectile_big,
@@ -127,7 +129,8 @@ function create_gun_table() {
         fire_rate: 50,
         bullet_spread: 1,
         bullet_speed: 10,
-		bullet_bounce: -1,
+		bullet_bounce: 0,
+		penetrative_value: 1,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
 		projectile_spr: spr_projectile_big,
@@ -143,6 +146,7 @@ function create_gun_table() {
         bullet_spread: 4,
         bullet_speed: 3,
 		bullet_bounce: 1,
+		penetrative_value: 0,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
 		projectile_spr: spr_projectile_plasma,
@@ -175,6 +179,7 @@ function copy_gun(_index) {
     copy.bullet_spread = original.bullet_spread;
     copy.bullet_speed = original.bullet_speed;
     copy.bullet_bounce = original.bullet_bounce;
+	copy.penetrative_value = original.penetrative_value;
     copy.bullet_lifespan = original.bullet_lifespan;
     copy.bullet_lifespan_rng = original.bullet_lifespan_rng;
     copy.projectile_spr = original.projectile_spr;
@@ -209,6 +214,7 @@ function build_gun(_inventory) {
 	var _minus_speed_num = 0;  // Counter for "FIRERATE+" tags
 	var _num_bullet_spread = 0;
 	var _bounce_type = 0;
+	var _penetrative_num = 0;
 	
 
     // apply effects based on tags
@@ -254,15 +260,16 @@ function build_gun(_inventory) {
 				_num_bullet_spread += 1;
 				break;
 			case 12:
-				
+				_penetrative_num++;
 				break;
 			case 13:
-				if (_bounce_type == 2){_bounce_type = 4};
+				if (_bounce_type == 2){_bounce_type = 4}
 				else if (_bounce_type != -1){_bounce_type = 3};
 				_num_bullet_spread += 2;
 				break;
         }
 		_projectile_properties.bullet_bounce = _bounce_type;
+		_projectile_properties.penetrative_value += _penetrative_num;
 		_projectile_properties.bullet_spread = _projectile_original.bullet_spread+((_projectile_original.bullet_spread/2)*_num_bullet_spread);
         show_debug_message("fire_rate num: " + string(_fire_rate_num));
     }
@@ -327,6 +334,7 @@ function create_projectile( _x, _y, _projectile_vert_offset, _rot, _inventory, _
     _new_projectile.owner = self;	
 	_new_projectile.initialize_projectile(_projectile_properties.projectile_type, _direction, _add_xspeed, _add_yspeed);
 	_new_projectile.bounce = _projectile_properties.bullet_bounce;
+	_new_projectile.penetrative_value = _projectile_properties.penetrative_value;
 	_new_projectile.spread = _projectile_properties.bullet_spread;
 	_new_projectile.sprite_index = _projectile_properties.projectile_spr;
 	_new_projectile.lifespan = _projectile_properties.bullet_lifespan;
