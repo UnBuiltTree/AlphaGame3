@@ -618,7 +618,7 @@ for (var _y = 0; _y < height_; _y++) {
 			var real_x = _x * CELL_WIDTH + CELL_WIDTH / 2;
             var real_y = _y * CELL_HEIGHT + CELL_HEIGHT / 2;
 			show_debug_message("Made Enemy")
-			instance_create_layer(real_x, real_y-12, "Instances", obj_enemy);
+			instance_create_layer(real_x, real_y+12, "Instances", obj_enemy);
         }
     }
 }

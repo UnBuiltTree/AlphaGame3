@@ -213,7 +213,11 @@ function build_gun(_inventory) {
 	var _plus_speed_num = 0;  // Counter for "FIRERATE+" tags
 	var _minus_speed_num = 0;  // Counter for "FIRERATE+" tags
 	var _num_bullet_spread = 0;
-	var _bounce_type = 0;
+	if (_projectile_properties.bullet_bounce = 1){
+		var _bounce_type = 1;
+	} else {
+		var _bounce_type = 0;
+	}
 	var _penetrative_num = 0;
 	
 
@@ -269,7 +273,7 @@ function build_gun(_inventory) {
 				break;
         }
 		_projectile_properties.bullet_bounce = _bounce_type;
-		_projectile_properties.penetrative_value += _penetrative_num;
+		_projectile_properties.penetrative_value = _projectile_original.penetrative_value + _penetrative_num;
 		_projectile_properties.bullet_spread = _projectile_original.bullet_spread+((_projectile_original.bullet_spread/2)*_num_bullet_spread);
         show_debug_message("fire_rate num: " + string(_fire_rate_num));
     }
