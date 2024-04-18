@@ -56,6 +56,30 @@ function create_item_table(){
 		type: "Upgrade_Module",
 	    info: "Module that makes your gun fire slower projectiles"
 	};
+	global.items[10] = {
+		num_: 10,
+	    name: "Dead shot",
+		type: "Upgrade_Module",
+	    info: "Module that makes your projectiles hit on impact. No bounce"
+	};
+	global.items[11] = {
+		num_: 11,
+	    name: "Perfect Bounce",
+		type: "Upgrade_Module",
+	    info: "Module that makes your projectiles bounce off of walls losing no momentum."
+	};
+	global.items[12] = {
+		num_: 12,
+	    name: "Penetrative",
+		type: "Upgrade_Module",
+	    info: "Module that makes your projectiles penetrate through enemies"
+	};
+	global.items[13] = {
+		num_: 13,
+	    name: "Return Bounce",
+		type: "Upgrade_Module",
+	    info: "Module that makes your projectiles bounce off of walls directly back to where they came from"
+	};
 
 	// add more items and modules here other items
 
@@ -73,7 +97,7 @@ function create_gun_table() {
         fire_rate: 10, 
         bullet_spread: 5,
         bullet_speed: 5,
-		bullet_bounce: false,
+		bullet_bounce: -1,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
 		projectile_spr: spr_projectile_small,
@@ -88,7 +112,7 @@ function create_gun_table() {
         fire_rate: 20,
         bullet_spread: 3,
         bullet_speed: 7,
-		bullet_bounce: false,
+		bullet_bounce: -1,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
 		projectile_spr: spr_projectile_big,
@@ -103,7 +127,7 @@ function create_gun_table() {
         fire_rate: 50,
         bullet_spread: 1,
         bullet_speed: 10,
-		bullet_bounce: false,
+		bullet_bounce: -1,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
 		projectile_spr: spr_projectile_big,
@@ -118,7 +142,7 @@ function create_gun_table() {
         fire_rate: 8,
         bullet_spread: 4,
         bullet_speed: 3,
-		bullet_bounce: true,
+		bullet_bounce: 1,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
 		projectile_spr: spr_projectile_plasma,
@@ -184,6 +208,7 @@ function build_gun(_inventory) {
 	var _plus_speed_num = 0;  // Counter for "FIRERATE+" tags
 	var _minus_speed_num = 0;  // Counter for "FIRERATE+" tags
 	var _num_bullet_spread = 0;
+	var _bounce_type = 0;
 	
 
     // apply effects based on tags
@@ -192,7 +217,7 @@ function build_gun(_inventory) {
         switch (_tag) {
             case 6:
                 //show_debug_message("BOUNCE TAG");
-                _projectile_properties.bullet_bounce = true;
+				if (_bounce_type == 0){_bounce_type = 1};
 				_num_bullet_spread += 2;
                 break;
             case 7:
@@ -219,7 +244,25 @@ function build_gun(_inventory) {
 					_projectile_properties.bullet_speed = 0.25;
 				}
 				break;
+			case 10:
+				if (_bounce_type >= 0){_bounce_type = -1};
+				_num_bullet_spread -= 2;
+				break;
+			case 11:
+				if (_bounce_type <= 1 && _bounce_type != -1){_bounce_type = 2}
+				else if (_bounce_type == 3){_bounce_type = 4};
+				_num_bullet_spread += 1;
+				break;
+			case 12:
+				
+				break;
+			case 13:
+				if (_bounce_type == 2){_bounce_type = 4};
+				else if (_bounce_type != -1){_bounce_type = 3};
+				_num_bullet_spread += 2;
+				break;
         }
+		_projectile_properties.bullet_bounce = _bounce_type;
 		_projectile_properties.bullet_spread = _projectile_original.bullet_spread+((_projectile_original.bullet_spread/2)*_num_bullet_spread);
         show_debug_message("fire_rate num: " + string(_fire_rate_num));
     }
