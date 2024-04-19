@@ -101,6 +101,7 @@ function create_gun_table() {
 		penetrative_value: 0,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
+		bullet_damage : 8,
 		projectile_spr: spr_projectile_small,
         projectile_type: "small_bullet"
     };
@@ -117,6 +118,7 @@ function create_gun_table() {
 		penetrative_value: 0,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
+		bullet_damage : 16,
 		projectile_spr: spr_projectile_big,
         projectile_type: "medium_bullet"
     };
@@ -133,6 +135,7 @@ function create_gun_table() {
 		penetrative_value: 1,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
+		bullet_damage : 32,
 		projectile_spr: spr_projectile_big,
         projectile_type: "high_impact_bullet"
     };
@@ -142,13 +145,14 @@ function create_gun_table() {
         name: "Player_Plasma_gun",
         type: "Gun_Module",
         info: "A rapid fire energy weapon, useful for close-range crowd control",
-        fire_rate: 8,
+        fire_rate: 6,
         bullet_spread: 4,
         bullet_speed: 3,
 		bullet_bounce: 1,
 		penetrative_value: 0,
 		bullet_lifespan: 16,
 		bullet_lifespan_rng: 2,
+		bullet_damage : 8,
 		projectile_spr: spr_projectile_plasma,
         projectile_type: "plasma_blast"
     };
@@ -182,6 +186,7 @@ function copy_gun(_index) {
 	copy.penetrative_value = original.penetrative_value;
     copy.bullet_lifespan = original.bullet_lifespan;
     copy.bullet_lifespan_rng = original.bullet_lifespan_rng;
+	copy.bullet_damage = original.bullet_damage;
     copy.projectile_spr = original.projectile_spr;
     copy.projectile_type = original.projectile_type;
 
@@ -343,6 +348,7 @@ function create_projectile( _x, _y, _projectile_vert_offset, _rot, _inventory, _
 	_new_projectile.sprite_index = _projectile_properties.projectile_spr;
 	_new_projectile.lifespan = _projectile_properties.bullet_lifespan;
 	_new_projectile.lifespan_rnd = _projectile_properties.bullet_lifespan_rng;
+	_new_projectile.damage = _projectile_properties.bullet_damage;
 	switch (_cooldown) {
 	    case "gun_one_cooldown":
 	        global.gun_one_cooldown = _projectile_properties.fire_rate;

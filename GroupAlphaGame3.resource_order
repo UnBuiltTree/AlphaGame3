@@ -9,6 +9,7 @@
     {"name":"obj_explore_mgr","order":1,"path":"objects/obj_explore_mgr/obj_explore_mgr.yy",},
     {"name":"obj_inventory","order":1,"path":"objects/obj_inventory/obj_inventory.yy",},
     {"name":"obj_projectile","order":3,"path":"objects/obj_projectile/obj_projectile.yy",},
+    {"name":"obj_item","order":5,"path":"objects/obj_item/obj_item.yy",},
     {"name":"collision_manager","order":3,"path":"scripts/collision_manager/collision_manager.yy",},
     {"name":"gun_functions","order":2,"path":"scripts/gun_functions/gun_functions.yy",},
     {"name":"inventory_functions","order":1,"path":"scripts/inventory_functions/inventory_functions.yy",},
