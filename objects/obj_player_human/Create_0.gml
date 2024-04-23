@@ -32,6 +32,10 @@ player_initialize = function(){
 	_frame = 0;
 	walking = false;
 	
+	_player_guns = initialize_player_guns()
+	
+	temp_inventory = array_create(1, -1);
+	
 	if (direction < 90){
 		walk_spr = spr_player_rt_walk;
 	} else if (direction < 180){
@@ -71,25 +75,21 @@ particle_manager = function(){
 	}
 }
 
-collision_manager = function(){
-	// detect collision with a wall object
-if (place_meeting(x + hspeed, y, obj_wall)) {
-	collision = true;
-    // resolve horizontal overlap
-    while (!place_meeting(x + sign(hspeed), y, obj_wall)) {
-        x += sign(hspeed);
-    }
-    hspeed = -hspeed; // Invert horizontal speed after resolving overlap
-}
-
-if (place_meeting(x, y + vspeed, obj_wall)) {
-	collision = true;
-    // resolve vertical overlap
-    while (!place_meeting(x, y + sign(vspeed), obj_wall)) {
-        y += sign(vspeed);
-    }
-    vspeed = -vspeed; // Invert vertical speed after resolving overlap
-}
+trigger_pressed = function(_trigger_type, _player_gun)
+{
+	switch (_trigger_type) {
+	    case "gun_left":
+			//show_debug_message("gun1 :" + string(global.gun_one_cooldown))
+	        if (global.gun_one_cooldown <= 0)
+			{
+				// Resets the fire cooldown, uses special burt mode for auto cannon
+				//show_debug_message("gun1 fired:" + string(global.gun_one_cooldown))
+				// Creates a projectile
+				_direction = point_direction(x, y+ycenter_offset, mouse_x, mouse_y)
+				create_projectile(x, y, ycenter_offset, _direction, temp_inventory, "gun_one_cooldown", hspeed, vspeed);
+			}
+	        break;
+	}
 }
 	
 
