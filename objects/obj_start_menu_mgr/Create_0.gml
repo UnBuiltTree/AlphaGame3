@@ -4,6 +4,8 @@ global.main_menu = true;
 global.debug_mode = false;
 global.cheat_mode = false;
 
+global.picking_up = false;
+
 global.hide_shadows = false;
 global.show_walls = false;
 global.show_explore = false;

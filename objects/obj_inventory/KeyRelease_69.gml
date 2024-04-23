@@ -1,1 +1,1 @@
-inventory_add(id, irandom(3)+1);
+global.picking_up = false;

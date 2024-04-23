@@ -9,22 +9,6 @@ initialize_projectile  = function(_projectile_type, _direction, _add_xspeed, _ad
 	lifespan_rnd; added to lifespan to give randomness
 	_explosion_type; if the projectile explodes at the end of its life this is what chages the type of explosion
 	*/
-	switch (_projectile_type) {
-	    case "player_projectile":
-			_speed = 4;
-			spread = 8;
-	        sprite_index = spr_projectile_plasma;
-			lifespan = 16;
-			lifespan_rnd = 2;
-	        break;
-	    default:
-	        _speed = 0;
-			spread = 8;
-	        sprite_index = spr_projectile_plasma;
-			lifespan = 16;
-			lifespan_rnd = 2;
-	        break;
-	}
 		
 	spread_counter = 0;
 	spread_limit = 100;

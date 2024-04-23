@@ -1,3 +1,8 @@
-var _slot = find_first_empty_slot(id) - 1;
+var _slot = find_last_occupied_slot(id);
 
-var _item = inventory_remove_slot(id, _slot);
+if (_slot != -1){
+	var _x = obj_mecha.x - 8
+	var _y = obj_mecha.y - 16
+	var _item = inventory_remove_slot(id, _slot);
+	create_item(_item, _x, _y + 6);
+}

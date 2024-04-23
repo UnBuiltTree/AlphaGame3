@@ -32,6 +32,12 @@ function create_item_table(){
 		type: "Gun_Module",
 	    info: "A rapid fire energy weapon, usefull for close-range crowd control"
 	};
+	global.items[5] = {
+		num_: 5,
+	    name: "NULL_WIP",
+		type: "Gun_Module",
+	    info: "TO BE MADE"
+	}
 	global.items[6] = {
 		num_: 6,
 	    name: "Bounce Module",
@@ -88,6 +94,23 @@ function create_item_table(){
 //func used to create the table of gun and their traits.
 function create_gun_table() {
     global.guns = [];
+	
+	global.guns[0] = {
+		num_: 0,
+        name: "Player_default_gun",
+        type: "Gun_Module",
+        info: "Puny",
+        fire_rate: 26, 
+        bullet_spread: 30,
+        bullet_speed: 3,
+		bullet_bounce: 0,
+		penetrative_value: 0,
+		bullet_lifespan: 15,
+		bullet_lifespan_rng: 5,
+		bullet_damage : 8,
+		projectile_spr: spr_projectile_small,
+        projectile_type: "small_bullet"
+    };
 
     global.guns[1] = {
 		num_: 1,
@@ -95,7 +118,7 @@ function create_gun_table() {
         type: "Gun_Module",
         info: "A rapid fire machine gun for sustained close quarters combat",
         fire_rate: 10, 
-        bullet_spread: 5,
+        bullet_spread: 10,
         bullet_speed: 5,
 		bullet_bounce: 0,
 		penetrative_value: 0,
@@ -146,7 +169,7 @@ function create_gun_table() {
         type: "Gun_Module",
         info: "A rapid fire energy weapon, useful for close-range crowd control",
         fire_rate: 6,
-        bullet_spread: 4,
+        bullet_spread: 12,
         bullet_speed: 3,
 		bullet_bounce: 1,
 		penetrative_value: 0,
@@ -156,6 +179,12 @@ function create_gun_table() {
 		projectile_spr: spr_projectile_plasma,
         projectile_type: "plasma_blast"
     };
+}
+	
+function random_item(){
+	var _num = irandom_range(1,12)
+	if (_num < 4){_num = _num + 1};
+	return _num
 }
 	
 function initialize_player_guns() {
@@ -195,6 +224,13 @@ function copy_gun(_index) {
 
 function build_gun(_inventory) {
     _gun = find_gun_module(_inventory);
+	if (_gun == -1) {
+        _gun = 0;
+        show_debug_message("No gun module found, setting gun to 0.");
+		var _projectile_properties = copy_gun(_gun);
+        global.mecha_guns.primary_gun = _gun;
+		return _projectile_properties;
+    }
     show_debug_message(string(_gun));
 
     // Ensures the tag list is created and clears it each time this function is called
@@ -261,12 +297,10 @@ function build_gun(_inventory) {
 				break;
 			case 10:
 				if (_bounce_type >= 0){_bounce_type = -1};
-				_num_bullet_spread -= 2;
 				break;
 			case 11:
 				if (_bounce_type <= 1 && _bounce_type != -1){_bounce_type = 2}
 				else if (_bounce_type == 3){_bounce_type = 4};
-				_num_bullet_spread += 1;
 				break;
 			case 12:
 				_penetrative_num++;
@@ -274,7 +308,6 @@ function build_gun(_inventory) {
 			case 13:
 				if (_bounce_type == 2){_bounce_type = 4}
 				else if (_bounce_type != -1){_bounce_type = 3};
-				_num_bullet_spread += 2;
 				break;
         }
 		_projectile_properties.bullet_bounce = _bounce_type;
@@ -300,7 +333,7 @@ function find_gun_module(_inventory){
             }
         }
     }
-    return "No Gun Module found"; // Return default message if no gun module is found
+    return -1; // Return -1 if no gun module is found
 }
 
 function find_upgrade_module(_inventory, _slot){
@@ -315,6 +348,7 @@ function find_upgrade_module(_inventory, _slot){
 	}
     return "No Gun Module found"; // Return default message if no gun module is found
 }
+
 	
 function create_projectile( _x, _y, _projectile_vert_offset, _rot, _inventory, _cooldown, _add_xspeed, _add_yspeed)
 {
@@ -341,7 +375,6 @@ function create_projectile( _x, _y, _projectile_vert_offset, _rot, _inventory, _
 	// Creates new player projectile from the new positions
 	var _new_projectile = instance_create_layer(_projectile_pos_x, _projectile_pos_y, "Projectiles", obj_projectile);
     _new_projectile.owner = self;	
-	_new_projectile.initialize_projectile(_projectile_properties.projectile_type, _direction, _add_xspeed, _add_yspeed);
 	_new_projectile.bounce = _projectile_properties.bullet_bounce;
 	_new_projectile.penetrative_value = _projectile_properties.penetrative_value;
 	_new_projectile.spread = _projectile_properties.bullet_spread;
@@ -357,6 +390,7 @@ function create_projectile( _x, _y, _projectile_vert_offset, _rot, _inventory, _
 	        global.gun_two_cooldown = _projectile_properties.fire_rate;
 	        break;
 	}
+	_new_projectile.initialize_projectile(_projectile_properties.projectile_type, _direction, _add_xspeed, _add_yspeed);
 	_new_projectile.set_projectile(_projectile_properties.bullet_speed, _direction, _add_xspeed, _add_yspeed);
 	
 	

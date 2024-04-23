@@ -1,0 +1,1 @@
+global.picking_up = true;

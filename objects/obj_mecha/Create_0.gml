@@ -85,6 +85,11 @@ particle_manager = function(){
 	
 create_inventory = function(){
 	var _inv = instance_create_layer(x, y,"Hud", obj_inventory);
+	randomize();
+	var _start_gun = irandom_range(1,3);
+	if _start_gun == 3 {_start_gun = 4}
+	_inv.inventory[0] = _start_gun;
+	_inv.inventory[1] = irandom_range(6,13);
 	return _inv
 }
 
