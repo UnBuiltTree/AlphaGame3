@@ -6,7 +6,13 @@ if (walking){
 } else {
 	draw_sprite(walk_spr, 0, x, y)
 }
-draw_sprite(torso_spr, 0, x, y - 16)
+var rotation = (point_direction(x, y+ycenter_offset, mouse_x, mouse_y));
+if rotation < 45 {draw_sprite(torso_spr, 0, x, y - 10)}
+else if rotation < 135 {draw_sprite(torso_spr, 1, x, y - 10)}
+else if rotation < 225 {draw_sprite(torso_spr, 2, x, y - 10)}
+else if rotation < 315 {draw_sprite(torso_spr, 3, x, y - 10)}
+else {draw_sprite(torso_spr, 0, x, y - 10)}
+
 	
 if (global.debug_mode){
 	draw_set_color(c_orange);
