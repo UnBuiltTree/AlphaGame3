@@ -9,8 +9,11 @@ if (enemy_curr_health <= 0){
 
 //-----
 
+
 if(direct == "left") {
+	//direction = 270;
 	//image_xscale = abs(image_xscale);
+	image_xscale = 1
 	
 	if(state == eState.WANDERING /*|| state == eState.HUNTING*/) {
 		hspeed = -1;	
@@ -19,7 +22,8 @@ if(direct == "left") {
 	}
 	
 } 
-else if(direct == "right") {
+if(direct == "right") {
+	//direction = 90;
 	//image_xscale = -abs(image_xscale);
 	
 	if(state == eState.WANDERING /*|| state == eState.HUNTING*/) {
@@ -29,7 +33,8 @@ else if(direct == "right") {
 	}
 	
 }//added code
-else if(direct == "up") {
+if(direct == "up") {
+	//direction = 180;
 	//image_xscale = -abs(image_xscale);
 	
 	if(state == eState.WANDERING /*|| state == eState.HUNTING*/) {
@@ -39,7 +44,7 @@ else if(direct == "up") {
 	}
 	
 }
-else if(direct == "down") {
+if(direct == "down") {
 	//image_xscale = -abs(image_xscale);
 	
 	if(state == eState.WANDERING /*|| state == eState.HUNTING*/) {
@@ -49,6 +54,12 @@ else if(direct == "down") {
 	}
 	
 }
+
+if hspeed < 0 {sprite = spr_enemy_small_lf; image_xscale = 1};
+if hspeed > 0 {sprite = spr_enemy_small_rt; image_xscale = -1};
+if vspeed < 0 {sprite = spr_enemy_small_up; image_xscale = 1};
+if vspeed > 0 {sprite = spr_enemy_small_dn; image_xscale = 1}
+
 
 collision_manager(1, false);
 

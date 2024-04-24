@@ -23,18 +23,24 @@ hspd=1;
 direct = choose("left", "right", "up","down");
 alarm[0] = 60;
 
+sprite = spr_enemy_small_dn
+//frame looping alarm
+frame = 0;
+alarm[1] = 6;
+
 state = eState.WANDERING;
 isRangedAttacking = false;
 isMeleeAttacking = false;
 
 
 
-
+/*
 if(sprite_exists(walking_sprite)) {
 	sprite_index = walking_sprite;
 } else {
 	sprite_index = fallback_sprite;
 }
+*/
 
 enum eState {
 	IDLE,
