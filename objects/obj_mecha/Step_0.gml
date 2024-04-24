@@ -103,6 +103,15 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 				global.gun_one_cooldown--
 			}
 			
+			if (keyboard_check(ord("M")))
+				{
+					if (_button_cooldown <= 0){
+						destroy_fuction(last_direction, eject_speed);
+						}
+					_button_cooldown = button_cooldown;
+					}
+				}
+			
 			// --- debuging tools
 			if (keyboard_check(ord("B")))
 				{
@@ -133,14 +142,6 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 						}
 					_button_cooldown = button_cooldown;
 					}
-				if (keyboard_check(ord("M")))
-				{
-					if (_button_cooldown <= 0){
-						destroy_fuction(last_direction, eject_speed);
-						}
-					_button_cooldown = button_cooldown;
-					}
-				}
 				if (keyboard_check(ord("V")))
 				{
 					if (_button_cooldown <= 0){
