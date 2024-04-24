@@ -18,7 +18,8 @@ if(direct == "left") {
 		hspeed = 0;
 	}
 	
-} else if(direct == "right") {
+} 
+else if(direct == "right") {
 	//image_xscale = -abs(image_xscale);
 	
 	if(state == eState.WANDERING /*|| state == eState.HUNTING*/) {
@@ -49,6 +50,9 @@ else if(direct == "down") {
 	
 }
 
+collision_manager(1, false);
+
+/*
 if(place_meeting(x + hspeed, y , obj_wall)) {
 	if(direct == "left") {
 		direct = "right";
@@ -85,6 +89,8 @@ if(!collision_line(x, y - sprite_height, x, y + sprite_width, obj_wall, false, t
 //vspd+=grv; 
 //hspd+=grv; <-- I added this
 
+*/
+
 /* 
 if (place_meeting(x, y+vspd, obj_wall)){ commented this stuff out because I don't know if its needed
 
@@ -104,7 +110,7 @@ if(randomStateTimer <= 0) {
 		state = eState.WANDERING;
 	} 
 	
-	randomStateTimer = irandom_range(50, randomStateMaxTimer);
+	randomStateTimer = irandom_range(80, randomStateMaxTimer);
 } else {
 	randomStateTimer--;	
 }

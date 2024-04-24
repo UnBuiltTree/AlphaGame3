@@ -14,13 +14,15 @@ walking_sprite = -1;
 fallback_sprite = spr_enemy
 
 randomStateTimer = 0;
-randomStateMaxTimer = 30;
+randomStateMaxTimer = 100;
 
 grv=0.5;
 vspd=1;
 hspd=1;
 
-direct = choose("left", "right","up", "down");
+direct = choose("left", "right", "up","down");
+alarm[0] = 60;
+
 state = eState.WANDERING;
 isRangedAttacking = false;
 isMeleeAttacking = false;
