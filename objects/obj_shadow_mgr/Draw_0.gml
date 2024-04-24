@@ -21,6 +21,13 @@ if (!global.hide_shadows){
 
 		draw_ellipse(sx - radius, sy - radius* squish_factor, sx + radius, sy + radius * squish_factor, false);
 	}
+	with (obj_enemy) {
+		var radius = sprite_get_width(sprite_index)/3+1
+		var sx = x-vx-1
+		var sy = y-vy-2+8
+
+		draw_ellipse(sx - radius, sy - radius* squish_factor, sx + radius, sy + radius * squish_factor, false);
+	}
 	with (obj_mecha) {
 		var radius = sprite_get_width(sprite_index)/2+1
 		var sx = x-vx-1
