@@ -21,7 +21,7 @@ function inventory_remove(_root_object, _item_type){
 function inventory_remove_slot(_root_object, _slot) {
     if (_slot >= 0 && _slot < INVENTORY_SLOTS) {
         var _item = _root_object.inventory[_slot];
-		show_debug_message("Slot: "+string(_slot)+" , Item: "+string(_item))
+		//show_debug_message("Slot: "+string(_slot)+" , Item: "+string(_item))
         _root_object.inventory[_slot] = -1;
         return _item;
     }

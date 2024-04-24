@@ -226,12 +226,12 @@ function build_gun(_inventory) {
     _gun = find_gun_module(_inventory);
 	if (_gun == -1) {
         _gun = 0;
-        show_debug_message("No gun module found, setting gun to 0.");
+        //show_debug_message("No gun module found, setting gun to 0.");
 		var _projectile_properties = copy_gun(_gun);
         global.mecha_guns.primary_gun = _gun;
 		return _projectile_properties;
     }
-    show_debug_message(string(_gun));
+    //show_debug_message(string(_gun));
 
     // Ensures the tag list is created and clears it each time this function is called
     if (!ds_exists(global._primary_gun_tags, ds_type_list)) {
@@ -244,7 +244,7 @@ function build_gun(_inventory) {
     for (var i = 0; i < array_length(_inventory); i++) {
         var _module = find_upgrade_module(_inventory, i);
         ds_list_add(global._primary_gun_tags, _module);
-        show_debug_message("tag loop: " + string(i));
+        //show_debug_message("tag loop: " + string(i));
     }
 
     // copies the original gun properties
@@ -313,7 +313,7 @@ function build_gun(_inventory) {
 		_projectile_properties.bullet_bounce = _bounce_type;
 		_projectile_properties.penetrative_value = _projectile_original.penetrative_value + _penetrative_num;
 		_projectile_properties.bullet_spread = _projectile_original.bullet_spread+((_projectile_original.bullet_spread/2)*_num_bullet_spread);
-        show_debug_message("fire_rate num: " + string(_fire_rate_num));
+        //show_debug_message("fire_rate num: " + string(_fire_rate_num));
     }
 
     global.mecha_guns.primary_gun = _gun;
@@ -325,10 +325,10 @@ function find_gun_module(_inventory){
     for (var i = 0; i < array_length(_inventory); i++) {
         var item_id = _inventory[i];
         if ((item_id != -1)&&(item_id != 0)) { // checks if the slot is not empty
-			show_debug_message("Item id:" + string(item_id));
+			//show_debug_message("Item id:" + string(item_id));
             var item_info = global.items[item_id]; // get item information from the array
             if (item_info.type == "Gun_Module") {
-				show_debug_message("Gun_Module found: " + string(item_info.num_));
+				//show_debug_message("Gun_Module found: " + string(item_info.num_));
                 return item_info.num_;
             }
         }
@@ -340,9 +340,9 @@ function find_upgrade_module(_inventory, _slot){
 	var item_id = _inventory[_slot];
     if ((item_id != -1)&&(item_id != 0)) { // checks if the slot is not empty
 		var item_info = global.items[item_id]; // get item information from the array
-		show_debug_message("Module item_info:" + string(item_id));
+		//show_debug_message("Module item_info:" + string(item_id));
 		if (item_info.type == "Upgrade_Module") {
-			show_debug_message("Module name:" + string(item_info.name));
+			//show_debug_message("Module name:" + string(item_info.name));
 			return item_info.num_;
 		}
 	}
@@ -358,7 +358,7 @@ function create_projectile( _x, _y, _projectile_vert_offset, _rot, _inventory, _
 	_projectile_offset = 0;
 	
 	if (_projectile_properties == undefined) {
-        show_debug_message("Gun type properties not found: " + _gun_type);
+        //show_debug_message("Gun type properties not found: " + _gun_type);
         return;
     }
 	
