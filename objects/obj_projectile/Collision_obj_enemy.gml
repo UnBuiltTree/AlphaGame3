@@ -4,6 +4,7 @@ if (penetrative_value < 0){
 	other.hspeed += hspeed/_knock_back
 	other.vspeed += vspeed/_knock_back
 	other.enemy_curr_health -= damage;
+	other.dmg = true;
 } else {
 	if (penetration_cooldown <= 0){
 		penetrative_value--;
@@ -11,5 +12,6 @@ if (penetrative_value < 0){
 		other.hspeed += hspeed/(_knock_back*4)
 		other.vspeed += vspeed/(_knock_back*4)
 		other.enemy_curr_health -= damage;
+		other.dmg = true;
 	}
 }

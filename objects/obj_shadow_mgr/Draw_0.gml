@@ -24,7 +24,7 @@ if (!global.hide_shadows){
 	with (obj_enemy) {
 		var radius = sprite_get_width(sprite_index)/3+1
 		var sx = x-vx-1
-		var sy = y-vy-2+8
+		var sy = y-vy-2
 
 		draw_ellipse(sx - radius, sy - radius* squish_factor, sx + radius, sy + radius * squish_factor, false);
 	}

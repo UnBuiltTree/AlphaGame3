@@ -12,6 +12,7 @@ enemy_initialize = function(){
 //-----
 walking_sprite = -1;
 fallback_sprite = spr_enemy
+dmg = false;
 
 randomStateTimer = 0;
 randomStateMaxTimer = 100;

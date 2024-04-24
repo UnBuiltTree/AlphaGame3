@@ -10,6 +10,7 @@ if (instance_exists(obj_mecha)){
 	target_y = room_height/2
 }
 
+
 // Calculate distance and direction towards the target
 var dx = target_x - x;
 var dy = target_y - y;
