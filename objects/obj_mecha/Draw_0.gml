@@ -6,7 +6,13 @@ if (walking){
 } else {
 	draw_sprite(walk_spr, 0, x, y)
 }
-draw_sprite(torso_spr, 0, x, y - 16)
+var rotation = (point_direction(x, y+ycenter_offset, mouse_x, mouse_y));
+if rotation < 45 {draw_sprite(torso_spr, 0, x, y - 10)}
+else if rotation < 135 {draw_sprite(torso_spr, 1, x, y - 10)}
+else if rotation < 225 {draw_sprite(torso_spr, 2, x, y - 10)}
+else if rotation < 315 {draw_sprite(torso_spr, 3, x, y - 10)}
+else {draw_sprite(torso_spr, 0, x, y - 10)}
+
 	
 if (global.debug_mode){
 	draw_set_color(c_orange);
@@ -17,7 +23,7 @@ if (global.debug_mode){
 	
 	draw_line(x, y+ycenter_offset, mouse_x, mouse_y)
 	
-	draw_circle(mouse_x, mouse_y, 4, false);
+	//draw_circle(mouse_x, mouse_y, 4, false);
 	
 	draw_set_color(c_fuchsia);
 	
@@ -52,7 +58,8 @@ if (global.debug_mode){
 } else {
 	draw_set_color(c_blue);
 	
-	draw_circle(mouse_x, mouse_y, 4, true);
+	//draw_circle(mouse_x, mouse_y, 4, true);
+	draw_sprite_ext(spr_crosshair, 0, mouse_x, mouse_y, 1, 1, 0, c_blue, 1)
 	
 	draw_set_color(c_white);
 }

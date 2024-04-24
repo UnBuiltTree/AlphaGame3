@@ -35,6 +35,13 @@ if (!global.hide_shadows){
 	    
 		draw_ellipse(sx - radius, sy - radius* squish_factor, sx + radius, sy + radius * squish_factor, false);
 	}
+	with (obj_projectile) {
+		var radius = sprite_get_width(sprite_index)/2+1
+		var sx = x-vx-1
+		var sy = y-vy-2+16
+	    
+		draw_ellipse(sx - radius, sy - radius* squish_factor, sx + radius, sy + radius * squish_factor, false);
+	}
 	
 
 	gpu_set_fog(false, c_white, 0, 0);

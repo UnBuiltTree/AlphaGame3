@@ -52,7 +52,7 @@ mecha_initialize = function(){
 	torso_spr = spr_torso
 	alarm[1] = _frame_rate;
 	
-	create_inventory();
+	inventory = create_inventory();
 	show_debug_message("Mecha Created")
 }
 
@@ -85,6 +85,11 @@ particle_manager = function(){
 	
 create_inventory = function(){
 	var _inv = instance_create_layer(x, y,"Hud", obj_inventory);
+	randomize();
+	var _start_gun = irandom_range(1,3);
+	if _start_gun == 3 {_start_gun = 4}
+	_inv.inventory[0] = _start_gun;
+	_inv.inventory[1] = irandom_range(6,13);
 	return _inv
 }
 
@@ -101,10 +106,9 @@ trigger_pressed = function(_trigger_type, _player_gun)
 			{
 				// Resets the fire cooldown, uses special burt mode for auto cannon
 				//show_debug_message("gun1 fired:" + string(global.gun_one_cooldown))
-				global.gun_one_cooldown = 20;
 				// Creates a projectile
 				_direction = point_direction(x, y+ycenter_offset, mouse_x, mouse_y)
-				create_projectile(x, y, ycenter_offset, _direction, _player_gun.primary_gun, hspeed, vspeed);
+				create_projectile(x, y, ycenter_offset, _direction, obj_inventory.inventory, "gun_one_cooldown", hspeed, vspeed);
 			}
 	        break;
 	}

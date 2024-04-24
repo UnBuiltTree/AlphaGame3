@@ -113,6 +113,17 @@ if (obj_game_mgr.curr_game_state != GAME_STATE.PAUSED){
 					}
 			}
 			collision = false;
+			if (mouse_check_button(mb_left))
+				{
+					var _trigger_type = "gun_left";
+					trigger_pressed(_trigger_type, _player_guns);
+				}
+				
+			if (global.gun_one_cooldown >= 0){
+				global.gun_one_cooldown--
+			}
+			
+			
 			// --- debuging tools
 			if (keyboard_check(ord("B")))
 				{

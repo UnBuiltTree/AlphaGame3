@@ -14,6 +14,10 @@ boundary_size_ = 6;
 max_room_size = 16;
 min_room_size = 6;
 min_space_distance_ = 12;
+
+//enemy_spawn_chance, spawns a enemy tile on one out of the number set
+enemy_spawn_chance = 64;
+
 grid_ = ds_grid_create(width_, height_);
 ds_grid_set_region(grid_, 0, 0, width_, height_, VOID);
 
@@ -76,6 +80,14 @@ min_distance_to_nearest_room = function(_rooms, _new_x, _new_y) {
         }
     }
     return min_distance;
+}
+	
+distance_to_room = function(_room, _x, _y) {
+    var _room_center_x = ds_map_find_value(_room, "_x") + ds_map_find_value(_room, "width") div 2;
+    var _room_center_y = ds_map_find_value(_room, "_y") + ds_map_find_value(_room, "height") div 2;
+    
+    // Calculate distance from (_x, _y) to the center of the spawn room
+    return point_distance(_x, _y, _room_center_x, _room_center_y);
 }
 
 
@@ -173,7 +185,7 @@ draw_room_connections = function(_room) {
         var _connected_center_x = ds_map_find_value(_connected_room, "_x") + ds_map_find_value(_connected_room, "width") / 2;
         var _connected_center_y = ds_map_find_value(_connected_room, "_y") + ds_map_find_value(_connected_room, "height") / 2;
         draw_line(_room_center_x * CELL_WIDTH, _room_center_y * CELL_HEIGHT, _connected_center_x * CELL_WIDTH, _connected_center_y*CELL_HEIGHT);
-		show_debug_message("drew connect line : "+ string(_room_center_x) + " : " + string(_room_center_y) + " : " + string(_connected_center_x) + " : " + string(_connected_center_y));
+		//show_debug_message("drew connect line : "+ string(_room_center_x) + " : " + string(_room_center_y) + " : " + string(_connected_center_x) + " : " + string(_connected_center_y));
     }
 };
 
@@ -320,10 +332,13 @@ place_room = function(_room_type){
             }
         }
     }
+		if (_room_placed) = true {
+			return _room
+		}
 }
 
 //room placement loop
-place_room("spawn_1"); _room_count--;
+player_spawn_room = place_room("spawn_1"); _room_count--;
 place_room("basic_1"); _room_count--;
 place_room("basic_1"); _room_count--;
 place_room("basic_1"); _room_count--;
@@ -525,6 +540,26 @@ for (var _y = 1; _y < height_ -1; _y++){
 	for (var _x = 1; _x < width_ -1; _x++){
 		
 		if(grid_[# _x, _y] == FLOOR){
+			var _chance = irandom(enemy_spawn_chance)
+			if (distance_to_room(player_spawn_room, _x, _y) >= 48){
+				if (_chance < 4){
+					grid_[# _x, _y] = ENEMY_SPAWN;
+				}
+			} else if (distance_to_room(player_spawn_room, _x, _y) >= 32){
+				if (_chance < 2){
+					grid_[# _x, _y] = ENEMY_SPAWN;
+				}
+			} else if (distance_to_room(player_spawn_room, _x, _y) >= 12){
+				if (_chance < 1){
+					grid_[# _x, _y] = ENEMY_SPAWN;
+				}
+			}
+		}
+	}
+	
+	for (var _x = 1; _x < width_ -1; _x++){
+		
+		if(grid_[# _x, _y] == FLOOR){
 			tilemap_set(_wall_map_id, 1, _x, _y);
 			
 		} else if (grid_[# _x, _y] == BRANCH_SEED) {
@@ -538,6 +573,9 @@ for (var _y = 1; _y < height_ -1; _y++){
 			
 		} else if (grid_[# _x, _y] == PLAYER_SPAWN) {
 			tilemap_set(_wall_map_id, 3, _x, _y);
+			
+		} else if (grid_[# _x, _y] == ENEMY_SPAWN) {
+			tilemap_set(_wall_map_id, 1, _x, _y);
 			
 		} else {
 			tilemap_set(_wall_map_id, 2, _x, _y);
@@ -568,12 +606,19 @@ for (var _y = 0; _y < height_; _y++) {
 			show_debug_message("Made Mecha")
             instance_create_layer(real_x, real_y, "Instances", obj_mecha_mount);
         }
-			if (grid_[# _x, _y] == PLAYER_SPAWN) {
+		if (grid_[# _x, _y] == PLAYER_SPAWN) {
 			// calculates the actual room position based on the grid position
 			var real_x = _x * CELL_WIDTH + CELL_WIDTH / 2;
             var real_y = _y * CELL_HEIGHT + CELL_HEIGHT / 2;
 			show_debug_message("Made player")
 			obj_game_mgr.spawn_player(real_x, real_y)
+        }
+		if (grid_[# _x, _y] == ENEMY_SPAWN) {
+			// calculates the actual room position based on the grid position
+			var real_x = _x * CELL_WIDTH + CELL_WIDTH / 2;
+            var real_y = _y * CELL_HEIGHT + CELL_HEIGHT / 2;
+			show_debug_message("Made Enemy")
+			instance_create_layer(real_x, real_y+12, "Instances", obj_enemy);
         }
     }
 }

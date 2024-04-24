@@ -8,6 +8,7 @@
 #macro PLAYER_SPAWN -9
 #macro BRANCH_SEED -10
 #macro BRANCH_END -11
+#macro ENEMY_SPAWN -12
 
 #macro NORTH 1
 #macro WEST 2
@@ -15,4 +16,4 @@
 #macro SOUTH 8
 
 //--- inventory macros
-#macro INVENTORY_SLOTS 6
+#macro INVENTORY_SLOTS 8
